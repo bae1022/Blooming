@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_location"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:text="위치 기록"
+                app:backgroundTint="@color/blue3" />
+
+            <Button
+                android:id="@+id/btn_life"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:text="일상 기록"
+                app:backgroundTint="@color/blue1" />
+
+            <Button
+                android:id="@+id/btn_diary"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:text="일기"
+                app:backgroundTint="@color/blue2" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_card"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:text="카드 내역"
+                app:backgroundTint="@color/blue3" />
+
+            <Button
+                android:id="@+id/btn_check"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:text="치매 진단" />
+
+            <Button
+                android:id="@+id/btn_game"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:text="예방 게임"
+                app:backgroundTint="@color/blue2" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btn_setting"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:text="초기화면"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+</androidx.constraintlayout.widget.ConstraintLayout>
