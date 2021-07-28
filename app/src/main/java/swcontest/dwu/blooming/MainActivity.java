@@ -2,9 +2,7 @@ package swcontest.dwu.blooming;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,5 +25,15 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null)
             startActivity(intent);
 
+
+        Button diaryButton = findViewById(R.id.btn_diary);
+        diaryButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),diaryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
