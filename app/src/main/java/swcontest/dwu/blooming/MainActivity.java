@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button diaryButton = (Button)findViewById(R.id.btn_diary);
+        Button diaryButton = findViewById(R.id.btn_diary);
         diaryButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
