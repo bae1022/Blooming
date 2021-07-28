@@ -23,9 +23,13 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, DailyMemoActivity.class);
                 break;
 
-            case R.id.btn_diary:
+            case R.id.btn_diary: //일기
                 intent = new Intent(this,diaryActivity.class);
+                break;
 
+            case R.id.btn_card: //카드 내역
+                intent = new Intent(this, CardDetailsActivity.class);
+                break;
         }
         if (intent != null)
             startActivity(intent);
