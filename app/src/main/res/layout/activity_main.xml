@@ -66,6 +66,7 @@
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
+                android:onClick="onClick"
                 android:text="치매 진단" />
 
             <Button
