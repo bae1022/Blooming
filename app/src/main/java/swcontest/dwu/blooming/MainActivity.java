@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = null;
 
         switch (v.getId()) {
+            case R.id.btn_location: // 위치 기록
+                intent = new Intent(this, LocationMemoActivity.class);
+                break;
+
             case R.id.btn_life: //일상 기록
                 intent = new Intent(this, DailyMemoActivity.class);
                 break;

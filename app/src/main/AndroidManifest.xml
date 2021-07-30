@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".diaryActivity" />
         <activity android:name=".CardDetailsActivity" />
+        <activity android:name=".LocationMemoActivity" />
     </application>
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
