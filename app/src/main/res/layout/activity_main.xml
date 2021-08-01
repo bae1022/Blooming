@@ -85,6 +85,7 @@
         android:id="@+id/btn_setting"
         android:layout_width="100dp"
         android:layout_height="80dp"
+        android:onClick="onClick"
         android:text="초기화면"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import swcontest.dwu.blooming.service.DailyMemoService;
+import swcontest.dwu.blooming.userSetting.StartActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.btn_check:
 
+                break;
+
+            case R.id.btn_setting: //초기화면
+                intent = new Intent(this, StartActivity.class);
                 break;
         }
         if (intent != null)
