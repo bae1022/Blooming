@@ -18,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     //일상 기록 Notification 설정_개발하실 때 주석처리 해주세요
-        Toast.makeText(getApplicationContext(),"Service 시작", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
-        startService(intent);
+//        Toast.makeText(getApplicationContext(),"Service 시작", Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
+//        startService(intent);
 
         //알람 종료
 //        Intent intent = new Intent(MainActivity.this,DailyMemoService.class);
