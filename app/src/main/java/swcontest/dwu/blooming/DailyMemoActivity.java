@@ -2,25 +2,28 @@ package swcontest.dwu.blooming;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DailyMemoActivity extends AppCompatActivity {
 
-    Button memo_ok;
-    Button memo_cancel;
-
     EditText memo_content;
 
     TextView memo_day;
     TextView memo_time;
+
+    DailyMemoDBHelper helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,17 +45,34 @@ public class DailyMemoActivity extends AppCompatActivity {
         memo_day.setText(getDay);
         memo_time.setText(getTime);
 
+        helper = new DailyMemoDBHelper(this);
     }
 
     public void onClick(View v) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Intent intent = new Intent(this, MainActivity.class);
 
         switch (v.getId()) {
             case R.id.daily_memo_ok:  //데이터베이스에 메모 삽입
 
+                ContentValues row = new ContentValues();
+
+                row.put(helper.COL_DATE, memo_day.getText().toString());
+                row.put(helper.COL_TIME, memo_time.getText().toString());
+                row.put(helper.COL_CONTENT, memo_content.getText().toString());
+
+                db.insert(helper.TABLE_NAME, null, row);
+
+                helper.close();
+                Toast.makeText(this, memo_time.getText().toString() + ", 일상 기록이 추가되었습니다.", Toast.LENGTH_SHORT);
+
+
+                startActivity(intent);
+
                 break;
 
             case R.id.daily_memo_cancel: //메인화면으로 이동
-                Intent intent = new Intent(this, MainActivity.class);
+
                 startActivity(intent);
                 break;
         }
