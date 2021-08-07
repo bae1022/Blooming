@@ -1,4 +1,4 @@
-package swcontest.dwu.blooming;
+package swcontest.dwu.blooming.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

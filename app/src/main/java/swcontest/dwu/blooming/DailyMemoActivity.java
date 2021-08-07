@@ -7,13 +7,14 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import swcontest.dwu.blooming.db.DailyMemoDBHelper;
 
 public class DailyMemoActivity extends AppCompatActivity {
 

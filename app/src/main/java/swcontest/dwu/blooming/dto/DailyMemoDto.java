@@ -1,4 +1,4 @@
-package swcontest.dwu.blooming;
+package swcontest.dwu.blooming.dto;
 
 import java.io.Serializable;
 
