@@ -38,4 +38,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //viewPager 스와이프를 위한 코드추가
     implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha04'
+
+    implementation "com.github.prolificinteractive:material-calendarview:1.4.3"
+
+
+
 }
