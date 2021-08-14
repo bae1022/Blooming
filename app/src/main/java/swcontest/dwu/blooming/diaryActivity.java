@@ -1,5 +1,6 @@
 package swcontest.dwu.blooming;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import swcontest.dwu.blooming.diary.OneDayDecorator;
 public class diaryActivity extends AppCompatActivity {
 
     MaterialCalendarView materialCalendarView;
+    public static final int sub = 1001;
 
     protected  void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -39,6 +41,8 @@ public class diaryActivity extends AppCompatActivity {
         //OneDayDecorator-오늘날짜, 토요일, 일요일 색변환.
         materialCalendarView.addDecorators( new SundayDecorator(),
                 new SaturdayDecorator(), new OneDayDecorator());
+
+        //점표시할 날짜 result
         String[] result = {"2021,08,18","2021,08,19","2021,08,20","2021,08,31"};
 
         new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
@@ -59,8 +63,15 @@ public class diaryActivity extends AppCompatActivity {
                 materialCalendarView.clearSelection();
 
                 Toast.makeText(getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(diaryActivity.this, KeepDiaryActivity.class);
+                intent.putExtra("year", Year);
+                intent.putExtra("month", Month);
+                intent.putExtra("day", Day);
+                startActivityForResult(intent,sub);//액티비티 띄우기
+
             }
         });
+
     }
 
     private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
@@ -108,8 +119,6 @@ public class diaryActivity extends AppCompatActivity {
                 dates.add(day);
 
             }
-
-
             return dates;
         }
 
