@@ -23,7 +23,7 @@ public class DailyMemoServiceThread extends Thread{
             handler.sendEmptyMessage(0);
 
             try{
-                Thread.sleep(30000); //3분 간격, 시간 설정 및 수정 필요
+                Thread.sleep(3000); //3분 간격, 시간 설정 및 수정 필요
             } catch (Exception e){
 
             }

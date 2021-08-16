@@ -5,11 +5,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import swcontest.dwu.blooming.service.DailyMemoService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
@@ -31,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         //알람 종료
 //        Intent intent = new Intent(MainActivity.this,DailyMemoService.class);
 //        stopService(intent);
+
+        //매 12시 일상기록 없어지도록 함
+        resetDailyMemo(this);
     }
 
     public void onClick(View v) {
@@ -107,4 +118,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void resetDailyMemo(Context context){
+        AlarmManager resetAlarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, DailyMemoResetBroadcastReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        // 자정 시간
+        Calendar resetCal = Calendar.getInstance();
+        resetCal.setTimeInMillis(System.currentTimeMillis());
+        resetCal.set(Calendar.HOUR_OF_DAY, 0);
+        resetCal.set(Calendar.MINUTE,0);
+        resetCal.set(Calendar.SECOND, 0);
+
+//        //다음날 0시에 맞추기 위해 24시간을 뜻하는 상수인 AlarmManager.INTERVAL_DAY를 더해줌.
+        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, resetCal.getTimeInMillis() + AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY, sender);
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
+        String setResetTime = format.format(new Date(resetCal.getTimeInMillis() + AlarmManager.INTERVAL_DAY));
+        Log.d("resetAlarm", "ResetHour : " + setResetTime);
+    }
 }

@@ -51,6 +51,9 @@
         <activity android:name=".SmsActivity" />
         <activity android:name=".LocationMemoActivity" />
         <activity android:name=".userSetting.StartActivity" />
+        <activity android:name=".DailyMemoListActivity" />
+
+        <receiver android:name=".DailyMemoResetBroadcastReceiver" />
     </application>
 
 
