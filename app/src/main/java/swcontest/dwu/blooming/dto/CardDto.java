@@ -7,14 +7,20 @@ public class CardDto implements Serializable {
     private long _id;
     private String title;
     private String date;
-    private int price;
+    private String price;
 
     public CardDto(){
 
     }
 
-    public CardDto(long _id, String title, String date, int price){
+    public CardDto(long _id, String title, String date, String price){
         this._id = _id;
+        this.title = title;
+        this.date = date;
+        this.price = price;
+    }
+
+    public CardDto(String title, String date, String price){
         this.title = title;
         this.date = date;
         this.price = price;
@@ -44,11 +50,11 @@ public class CardDto implements Serializable {
         this.date = date;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 }

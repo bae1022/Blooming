@@ -28,7 +28,7 @@ public class CardDBManager {
             long id = cursor.getInt(cursor.getColumnIndex(helper.COL_ID));
             String title = cursor.getString(cursor.getColumnIndex(helper.COL_TITLE));
             String date = cursor.getString(cursor.getColumnIndex(helper.COL_DATE));
-            int price = cursor.getInt(cursor.getColumnIndex(helper.COL_PRICE));
+            String price = cursor.getString(cursor.getColumnIndex(helper.COL_PRICE));
 
             cardList.add(new CardDto(id,  title, date, price));
         }
