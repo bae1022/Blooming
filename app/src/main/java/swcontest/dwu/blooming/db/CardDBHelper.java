@@ -29,7 +29,7 @@ public class CardDBHelper extends SQLiteOpenHelper {
         Log.d(TAG, sql);
         db.execSQL(sql);
 
-        db.execSQL("insert into " + TABLE_NAME + " values (null, '하나로마트', '2021-08-07 21:33', '5000원');");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '하나로마트', '08/07 21:33', '5000원');");
     }
 
     @Override
