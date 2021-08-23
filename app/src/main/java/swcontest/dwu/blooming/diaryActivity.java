@@ -28,6 +28,7 @@ import swcontest.dwu.blooming.diary.OneDayDecorator;
 public class diaryActivity extends AppCompatActivity {
 
     MaterialCalendarView materialCalendarView;
+    public static ArrayList<String> resultList = new ArrayList<>();
     public static final int sub = 1001;
 
     protected  void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +44,9 @@ public class diaryActivity extends AppCompatActivity {
                 new SaturdayDecorator(), new OneDayDecorator());
 
         //점표시할 날짜 result
-        String[] result = {"2021,08,18","2021,08,19","2021,08,20","2021,08,31"};
+        //String[] result = {"2021,08,18","2021,08,19","2021,08,20","2021,08,31"};
 
-        new ApiSimulator(result).executeOnExecutor(Executors.newSingleThreadExecutor());
+        new ApiSimulator(resultList).executeOnExecutor(Executors.newSingleThreadExecutor());
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -58,8 +59,10 @@ public class diaryActivity extends AppCompatActivity {
                 Log.i("Day test", Day + "");
 
                 String shot_Day = Year + "," + Month + "," + Day;
+                resultList.add(shot_Day);
+                Log.i("resultList", resultList + "");
 
-                Log.i("shot_Day test", shot_Day + "");
+               // Log.i("shot_Day test", shot_Day + "");
                 materialCalendarView.clearSelection();
 
                 Toast.makeText(getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
@@ -78,8 +81,8 @@ public class diaryActivity extends AppCompatActivity {
 
         String[] Time_Result;
 
-        ApiSimulator(String[] Time_Result) {
-            this.Time_Result = Time_Result;
+        ApiSimulator(ArrayList<String> Time_Result) {
+            this.Time_Result = Time_Result.toArray(new String[0]);
         }
 
         @Override
