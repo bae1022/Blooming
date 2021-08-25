@@ -12,11 +12,13 @@
             android:id="@+id/pictureTxtView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent"
+            android:background="@color/blue5"
             android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="70sp"
             android:textStyle="bold"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp"
             tools:text="1" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

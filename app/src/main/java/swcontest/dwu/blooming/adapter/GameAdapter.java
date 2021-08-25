@@ -80,7 +80,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
                     .start();
         } else if (check == 2) {
             binding.pictureTxtView.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-            binding.pictureTxtView.setBackgroundColor(Color.BLACK);
+//            binding.pictureTxtView.setBackgroundColor(Color.BLACK);
         } else {
 
         }
