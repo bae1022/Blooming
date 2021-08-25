@@ -71,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_setting: //초기화면
                 intent = new Intent(this, StartActivity.class);
                 break;
+
+            case R.id.btn_game:
+                intent = new Intent(this, GameActivity.class);
+
+                Toast.makeText(this, " 눌리긴 함", Toast.LENGTH_LONG).show();
+                break;
         }
         if (intent != null)
             startActivity(intent);
