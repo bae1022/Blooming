@@ -26,6 +26,9 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
     private FragmentStateAdapter pagerAdapter;
     private int num_page = 6;
 
+    //데이터 전달 위해
+    Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +38,8 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
         pagerAdapter = new FragmentAdapter(this, num_page);
         mPager.setAdapter(pagerAdapter);
 
-        mPager.setCurrentItem(0);
-        mPager.setOffscreenPageLimit(6);
+//        mPager.setCurrentItem(3);
+//        mPager.setOffscreenPageLimit(6);
 
         mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

@@ -1,57 +1,99 @@
 package swcontest.dwu.blooming.userSetting;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserData {
-    //추후 이름, 생년월일, 주소, 추적주기, 기상취침시간, 보호자번호로 변경
-//    private String name;
-//    private Date birth;
-//    private String address;
-//    private int period;
-//    private Date wakeTime;
-//    private Date bedTime;
-//    private String phone;
-//    int check;
-//
-//    public UserData(int check){
-//        this.check = check;
-//    }
-//
-//    public String getName() { return name; }
-//    public void setName(String name) { this.name = name; }
-//
-//    public Date getBirth() { return birth; }
-//    public void setBirth(Date birth) { this.birth = birth; }
-//
-//    public String getAddress() { return address; }
-//    public void setAddress(String address) { this.address = address; }
-//
-//    public int getPeriod() { return period; }
-//    public void setPeriod(int period) { this.period = period; }
-//
-//    public Date getWakeTime() { return wakeTime; }
-//    public void setWakeTime(Date wakeTime) { this.wakeTime = wakeTime; }
-//
-//    public Date getBedTime() { return bedTime; }
-//    public void setBedTime(Date bedTime) { this.bedTime = bedTime; }
-//
-//    public String getPhone() { return phone; }
-//    public void setPhone(String phone) { this.phone = phone; }
-//
-//    public int getCheck() { return check; }
-//    public void setCheck(int check) { this.check = check; }
+public class UserData implements Serializable {
+    //이름
+    private String name;
+    //생년월일
+    private int month;
+    private int day;
+    private int year;
+    //주소
+    private String address;
+    //위치추적 주기
+    private int period;
+    //기상,취침시각
+    private Date wakeTime;
+    private Date bedTime;
+    //보호자 번호
+    private String phone;
 
-    int color;
-    String title;
-
-    public UserData(int color, String title){
-        this.color = color;
-        this.title = title;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getColor(){ return color; }
-    public void setColor(int color){ this.color = color; }
+    public int getMonth() {
+        return month;
+    }
+    public void setMonth(int month) {
+        this.month = month;
+    }
 
-    public String getTitle(){ return title; }
-    public void setTitle(String title){ this.title = title; }
+    public int getDay() {
+        return day;
+    }
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getYear() {
+        return year;
+    }
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
+    public Date getWakeTime() {
+        return wakeTime;
+    }
+    public void setWakeTime(Date wakeTime) {
+        this.wakeTime = wakeTime;
+    }
+
+    public Date getBedTime() {
+        return bedTime;
+    }
+    public void setBedTime(Date bedTime) {
+        this.bedTime = bedTime;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    //    int color;
+//    String title;
+//
+//    public UserData(int color, String title){
+//        this.color = color;
+//        this.title = title;
+//    }
+//
+//    public int getColor(){ return color; }
+//    public void setColor(int color){ this.color = color; }
+//
+//    public String getTitle(){ return title; }
+//    public void setTitle(String title){ this.title = title; }
 }

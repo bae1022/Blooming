@@ -16,13 +16,12 @@ public class FragmentAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        int index = getRealPosition(position);
 
-        if(index == 0) return new UserNameActivity();
-        else if(index == 1) return new UserBirthActivity();
-        else if(index == 2) return new UserHomeActivity();
-        else if(index == 3) return new UserPeriodActivity();
-        else if(index == 4) return new UserSleepActivity();
+        if(position == 0) return new UserNameActivity();
+        else if(position == 1) return new UserBirthActivity();
+        else if(position == 2) return new UserHomeActivity();
+        else if(position == 3) return new UserPeriodActivity();
+        else if(position == 4) return new UserSleepActivity();
         else return new UserPhoneActivity();
     }
 
@@ -31,7 +30,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
         return 6;
     }
 
-    public int getRealPosition(int position){
-        return position % mCount;
-    }
+//    public int getRealPosition(int position){
+//        return position % mCount;
+//    }
 }

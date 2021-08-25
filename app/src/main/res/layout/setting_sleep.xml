@@ -17,7 +17,7 @@
         android:text="분 입니다."
         android:textColor="@color/blue5"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/editTextTime2"
+        app:layout_constraintStart_toEndOf="@+id/et_wake_minute"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -30,19 +30,20 @@
         android:text="분 입니다."
         android:textColor="@color/blue5"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/editTextNumber2"
+        app:layout_constraintStart_toEndOf="@+id/et_sleep_minute"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
-        android:id="@+id/editTextTime"
+        android:id="@+id/et_wake_hour"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="230dp"
         android:ems="10"
+        android:hint="7"
         android:inputType="time"
-        android:textSize="12sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +57,7 @@
         android:text="시"
         android:textColor="@color/blue5"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/editTextTime"
+        app:layout_constraintStart_toEndOf="@+id/et_wake_hour"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -72,41 +73,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/spinner_hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_wake_hour" />
+
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginTop="48dp"
         android:text="시"
         android:textColor="@color/blue5"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/editTextNumber"
+        app:layout_constraintStart_toEndOf="@+id/et_sleep_hour"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <EditText
-        android:id="@+id/editTextNumber2"
-        android:layout_width="30dp"
+        android:id="@+id/et_sleep_minute"
+        android:layout_width="40dp"
         android:layout_height="42dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
         android:ems="10"
+        android:hint="30"
         android:inputType="number"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTime2" />
+        app:layout_constraintTop_toBottomOf="@+id/et_wake_minute" />
 
     <EditText
-        android:id="@+id/editTextTime2"
+        android:id="@+id/et_wake_minute"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="230dp"
         android:ems="10"
+        android:hint="0"
         android:inputType="time"
-        android:textSize="12sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,15 +136,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <EditText
-        android:id="@+id/editTextNumber"
+        android:id="@+id/et_sleep_hour"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="32dp"
         android:ems="10"
+        android:hint="22"
         android:inputType="number"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
+        app:layout_constraintTop_toBottomOf="@+id/et_wake_hour" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
