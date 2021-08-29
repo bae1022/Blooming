@@ -46,6 +46,20 @@ public class MainActivity extends AppCompatActivity {
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
 
+        //사용자 초기설정 확인
+        try{
+            UserDBHelper helper = new UserDBHelper(this);
+            SQLiteDatabase userDB = helper.getReadableDatabase();
+            Cursor cursor = userDB.rawQuery("SELECT name, address FROM " + helper.TABLE_NAME + ";", null);
+
+            while(cursor.moveToNext()) {
+                String name = cursor.getString(0);
+                String address = cursor.getString(1);
+                Toast.makeText(this, address+ "사는 " +name + "님 안녕하세요!", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
