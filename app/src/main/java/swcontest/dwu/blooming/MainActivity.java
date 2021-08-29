@@ -1,5 +1,6 @@
 package swcontest.dwu.blooming;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,6 +15,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import java.util.Date;
 import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.service.DailyMemoService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
+import swcontest.dwu.blooming.userSetting.UserUpdateActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,22 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
-
-        //사용자 초기설정 확인
-        try{
-            UserDBHelper helper = new UserDBHelper(this);
-            SQLiteDatabase userDB = helper.getReadableDatabase();
-            Cursor cursor = userDB.rawQuery("SELECT name, address FROM " + helper.TABLE_NAME + ";", null);
-
-            while(cursor.moveToNext()) {
-                String name = cursor.getString(0);
-                String address = cursor.getString(1);
-                Toast.makeText(this, address+ "사는 " +name + "님 안녕하세요!", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
     }
 
     public void onClick(View v) {
@@ -161,4 +149,33 @@ public class MainActivity extends AppCompatActivity {
         String setResetTime = format.format(new Date(resetCal.getTimeInMillis() + AlarmManager.INTERVAL_DAY));
         Log.d("resetAlarm", "ResetHour : " + setResetTime);
     }
+
+    //액션바 설정버튼
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    //사용자 초기설정 확인
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.btn_setting:
+                Intent intent = new Intent(MainActivity.this, UserUpdateActivity.class);
+                startActivity(intent);
+//                UserDBHelper helper = new UserDBHelper(this);
+//                SQLiteDatabase userDB = helper.getReadableDatabase();
+//                Cursor cursor = userDB.rawQuery("SELECT name, address FROM " + helper.TABLE_NAME + ";", null);
+//
+//                while(cursor.moveToNext()) {
+//                    String name = cursor.getString(0);
+//                    String address = cursor.getString(1);
+//                    Toast.makeText(this, address+ "사는 " +name + "님 안녕하세요!", Toast.LENGTH_LONG).show();
+//                }
+                break;
+        }
+        return true;
+    }
+
 }
