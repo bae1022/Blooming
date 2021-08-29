@@ -4,4 +4,11 @@
     <string name="channel_name">My Channel</string>
     <string name="channel_description">Channel Example</string>
     <string name="CHANNEL_ID">MY_CHANNEL</string>
+
+    <string name="google_api_key">AIzaSyCnYfw1J081j6bvQHfgf2PoM_ZMa3uo6dY</string>
+    <string name="service_not_available">서비스를 사용할 수 없습니다.</string>
+    <string name="invalid_lat_long_used">잘못된 위도/경도 입니다.</string>
+    <string name="no_address_found">주소를 찾을 수 없습니다.</string>
+    <string name="address_found">주소를 찾았습니다.</string>
+    <string name="no_geocoder_available">사용가능한 Geocoder가 없습니다.</string>
 </resources>

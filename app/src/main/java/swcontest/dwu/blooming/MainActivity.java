@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import swcontest.dwu.blooming.db.UserDBHelper;
-import swcontest.dwu.blooming.service.DailyMemoService;
+import swcontest.dwu.blooming.service.LocationService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
 
-
     }
 
     public void onClick(View v) {
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.btn_location: // 위치 기록
-                intent = new Intent(this, LocationMemoActivity.class);
+                intent = new Intent(this, LocationActivity.class);
                 break;
 
             case R.id.btn_life: //일상 기록
@@ -92,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
     //manifest와 java에 둘 다 권한 허가받는 코드를 작성한다.
     private void checkDangerousPermissions() {
         String[] permissions = {
-                Manifest.permission.RECEIVE_SMS
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         };
 
         int permissionCheck = PackageManager.PERMISSION_GRANTED;
