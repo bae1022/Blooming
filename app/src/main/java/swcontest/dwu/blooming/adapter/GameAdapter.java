@@ -62,8 +62,9 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            binding.pictureTxtView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
+                            binding.pictureTxtView.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.card_game_bg1));
                             binding.pictureTxtView.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+//                            binding.pictureTxtView.setTextDrawable(ContextCompat.getDrawable(context, R.drawable.my_selector));
                             binding.pictureTxtView.animate()
                                     .rotationYBy(90)
                                     .rotationY(180)
@@ -80,7 +81,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.ViewHolder>{
                     .start();
         } else if (check == 2) {
             binding.pictureTxtView.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-//            binding.pictureTxtView.setBackgroundColor(Color.BLACK);
+
+//            binding.pictureTxtView.setBackgroundColor(Color.WHITE);
         } else {
 
         }

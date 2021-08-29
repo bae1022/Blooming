@@ -12,7 +12,7 @@
             android:id="@+id/pictureTxtView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/blue5"
+            android:background="@drawable/card_game"
             android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="70sp"
