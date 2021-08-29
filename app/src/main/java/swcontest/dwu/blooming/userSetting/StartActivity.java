@@ -38,8 +38,8 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
         pagerAdapter = new FragmentAdapter(this, num_page);
         mPager.setAdapter(pagerAdapter);
 
-//        mPager.setCurrentItem(3);
-//        mPager.setOffscreenPageLimit(6);
+//        mPager.setCurrentItem(3); //초기화면 선택
+        mPager.setOffscreenPageLimit(1);  // 좌우로 6페이지를 그려져 있는 상태로 설정
 
         mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

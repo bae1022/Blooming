@@ -10,7 +10,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
     public FragmentAdapter(FragmentActivity fa, int count){
         super(fa);
-        mCount = count;
+        mCount = count; //생성할 프래그먼트 개수
     }
 
     @NonNull

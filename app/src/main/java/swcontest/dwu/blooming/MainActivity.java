@@ -10,6 +10,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.service.DailyMemoService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
 
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
+
+
     }
 
     public void onClick(View v) {
