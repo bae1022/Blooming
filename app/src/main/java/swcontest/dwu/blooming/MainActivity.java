@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
+
+        alarmDailyMemo(this);
+
+
 
 
     }
@@ -96,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
     //manifest와 java에 둘 다 권한 허가받는 코드를 작성한다.
     private void checkDangerousPermissions() {
         String[] permissions = {
-                Manifest.permission.RECEIVE_SMS
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
         };
 
         int permissionCheck = PackageManager.PERMISSION_GRANTED;
@@ -168,5 +176,77 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public void alarmDailyMemo(Context context){
+            AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, AlarmDailyMemoBroadcastReceiver.class);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 1, intent, 0);
+
+            ArrayList<String> userInfo = new ArrayList<String>();
+
+            userInfo = getUserWakeSleep();
+
+            String wake = userInfo.get(0);
+            String sleep = userInfo.get(1);
+
+            Log.d("확인하자", "기상시간: " + wake);
+        Log.d("확인하자", "취침시간: " + sleep);
+
+        String hour_wake = wake.substring(wake.lastIndexOf(":") + 1);
+        String minute_wake = wake.substring(wake.length() - 2, wake.length());
+
+        String hour_sleep = sleep.substring(sleep.lastIndexOf(":") + 1);
+        String minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
+
+            Calendar alarmCal = Calendar.getInstance();
+
+        alarmCal.setTimeInMillis(System.currentTimeMillis());
+        alarmCal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(hour_wake));
+        alarmCal.set(Calendar.MINUTE, Integer.valueOf(minute_wake));
+        alarmCal.set(Calendar.SECOND, 0);
+
+// 1000*60*60*4
+
+        long now = System.currentTimeMillis();
+        Date mDate = new Date(now);
+        SimpleDateFormat simpleDate = new SimpleDateFormat("hh");
+        String getTime = simpleDate.format(mDate);
+
+        int getH = Integer.valueOf(getTime);
+
+        if (Integer.parseInt(hour_wake) <= getH && Integer.parseInt(hour_sleep) >= getH){ //조건 더 설정해야함
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmCal.getTimeInMillis(), 30, sender);
+        }
+        else{
+            alarmManager.cancel(sender);
+        }
+
+    }
+
+    // 유저의 기상시간과 수면시간을 받아옴
+    public ArrayList<String> getUserWakeSleep() {
+
+        ArrayList<String> userInfo = new ArrayList<String>();
+
+        UserDBHelper helper = new UserDBHelper(this);
+        SQLiteDatabase userDB = helper.getReadableDatabase();
+        Cursor cursor = userDB.rawQuery("SELECT wake, sleep FROM " + helper.TABLE_NAME + ";", null);
+
+        while(cursor.moveToNext()) {
+            String wake = cursor.getString(0);
+            String sleep = cursor.getString(1);
+
+            Log.d("확인하자2", "기상시간: " + wake);
+            Log.d("확인하자2", "취침시간: " + sleep);
+
+            userInfo.add(wake);
+            userInfo.add(sleep);
+        }
+
+        cursor.close();
+        helper.close();
+
+        return userInfo;
     }
 }

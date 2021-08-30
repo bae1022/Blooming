@@ -72,6 +72,7 @@
         <activity android:name=".userSetting.UserUpdateActivity"/>
 
         <receiver android:name=".DailyMemoResetBroadcastReceiver" />
+        <receiver android:name=".AlarmDailyMemoBroadcastReceiver" />
     </application>
 
 </manifest>
