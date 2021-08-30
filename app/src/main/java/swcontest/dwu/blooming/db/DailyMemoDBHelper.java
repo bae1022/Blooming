@@ -19,10 +19,6 @@ public class DailyMemoDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + " ( " + COL_ID + " integer primary key autoincrement,"
                 + COL_DATE + " TEXT, " + COL_TIME + " TEXT, " + COL_CONTENT + " TEXT);");
-
-//        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '2019/10/11', '롯데월드', '4.5', 'f');");
-//        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '2019/10/11', '롯데월드', '4.5', 'd');");
-//        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '2019/10/11', '롯데월드', '4.5', 'e');");
     }
 
     @Override

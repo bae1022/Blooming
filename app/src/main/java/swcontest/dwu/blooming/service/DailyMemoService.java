@@ -71,7 +71,7 @@ public class DailyMemoService extends Service {
             NotificationCompat.Builder builder
                     = new NotificationCompat.Builder(getApplicationContext(), getString(R.string.CHANNEL_ID))
                     .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setContentTitle("지금 뭘 하고 계신가요?")
+                    .setContentTitle("지금 무엇을 하고 계신가요?")
                     .setContentText("당신의 일상을 알려주세요!")
 //                    .setStyle(new NotificationCompat.BigTextStyle()
 //                            .bigText("기본적인 알림의 메시지 보다 더 많은 양의 내용을 알림에 표시하고자 할 때 메시지가 잘리지 않도록 함."))
