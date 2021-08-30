@@ -37,8 +37,8 @@ public class DailyMemoActivity extends AppCompatActivity {
         long now = System.currentTimeMillis();
         Date date = new Date(now);
 
-        SimpleDateFormat sdf_day = new SimpleDateFormat("yyyy년 M월 dd일");
-        SimpleDateFormat sdf_time = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat sdf_day = new SimpleDateFormat("yyyy년 M월 dd일 E요일");
+        SimpleDateFormat sdf_time = new SimpleDateFormat("a hh:mm");
 
         String getDay = sdf_day.format(date);
         String getTime = sdf_time.format(date);

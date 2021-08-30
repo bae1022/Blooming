@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="swcontest.dwu.blooming">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
@@ -15,10 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Blooming">
         <activity android:name=".GameActivity"></activity>
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_api_key" />
 
         <receiver
             android:name=".SmsReceiver"
@@ -43,16 +37,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <service
-            android:name=".service.LocationService"
-            android:enabled="true"
-            android:exported="true"/>
-
-        <service
-            android:name=".service.FetchAddressIntentService"
-            android:enabled="true"
-            android:exported="false" />
-
         <activity android:name=".DailyMemoActivity" />
         <activity android:name=".MainActivity">
 
@@ -66,8 +50,7 @@
         <activity android:name=".diaryActivity" />
         <activity android:name=".KeepDiaryActivity" />
         <activity android:name=".CardDetailsActivity" />
-        <activity android:name=".SmsActivity" />
-        <activity android:name=".LocationActivity" />
+        <activity android:name=".LocationMemoActivity" />
         <activity android:name=".userSetting.StartActivity" />
         <activity android:name=".DailyMemoListActivity" />
 
