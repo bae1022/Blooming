@@ -38,7 +38,8 @@ public class SmsReceiver extends BroadcastReceiver {
                 String contents = messages[0].getMessageBody().toString();
                 String[] split = contents.split("\n");
                 if(split[0].equals("[Web발신]")){
-                    if(split[1].startsWith("하나") || split[1].startsWith("NH") || split[1].startsWith("삼성") || split[1].startsWith("롯데") || split[1].startsWith("신한")){
+                    if(split[1].startsWith("하나") || split[1].startsWith("NH") || split[1].startsWith("삼성") || split[1].startsWith("롯데") || split[1].startsWith("신한")
+                        || split[1].startsWith("KB") || split[1].startsWith("우리") || split[1].startsWith("MG") || split[1].startsWith("BC") || split[1].startsWith("IBK")){
                         String title = split[5];
                         String price = split[3];
                         String[] cut = price.split(" ");
