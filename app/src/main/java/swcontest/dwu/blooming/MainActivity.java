@@ -193,11 +193,20 @@ public class MainActivity extends AppCompatActivity {
             Log.d("확인하자", "기상시간: " + wake);
         Log.d("확인하자", "취침시간: " + sleep);
 
-        String hour_wake = wake.substring(wake.lastIndexOf(":") + 1);
-        String minute_wake = wake.substring(wake.length() - 2, wake.length());
+        int index = wake.indexOf(":");
+        int index2 = sleep.indexOf(":");
 
-        String hour_sleep = sleep.substring(sleep.lastIndexOf(":") + 1);
+        String minute_wake = wake.substring(wake.length() - 2, wake.length());
+        String hour_wake = wake.substring(0, index);
+
+
         String minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
+        String hour_sleep = sleep.substring(0, index2);
+
+        Log.d(".", hour_wake);
+        Log.d(".", minute_wake);
+        Log.d(".", hour_sleep);
+        Log.d(".", minute_sleep);
 
             Calendar alarmCal = Calendar.getInstance();
 
@@ -214,6 +223,10 @@ public class MainActivity extends AppCompatActivity {
         String getTime = simpleDate.format(mDate);
 
         int getH = Integer.valueOf(getTime);
+
+        Log.d("확인", getTime);
+        Log.d("확인", hour_wake);
+        Log.d("확인", hour_sleep);
 
         if (Integer.parseInt(hour_wake) <= getH && Integer.parseInt(hour_sleep) >= getH){ //조건 더 설정해야함
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmCal.getTimeInMillis(), 30, sender);
