@@ -71,17 +71,6 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 
-    // 액티비티로 메세지의 내용을 전달해줌
-//    private void sendToActivity(Context context, String sender, String contents, Date receivedDate) {
-//        Intent intent = new Intent(context, SmsActivity.class);
-//        // Flag 설정
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        // 메세지의 내용을 Extra에 넣어줌
-//        intent.putExtra("sender", sender);
-//        intent.putExtra("contents", contents);
-//        intent.putExtra("receivedDate", format.format(receivedDate));
-//        context.startActivity(intent);
-//    }
 
     private SmsMessage[] parseSmsMessage(Bundle bundle) {
         Object[] objs = (Object[]) bundle.get("pdus");
