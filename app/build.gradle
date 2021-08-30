@@ -45,6 +45,10 @@ dependencies {
 
     implementation "com.github.prolificinteractive:material-calendarview:1.4.3"
 
+    // google map 사용을 위한 코드 추가
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
     //게임 관련
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
