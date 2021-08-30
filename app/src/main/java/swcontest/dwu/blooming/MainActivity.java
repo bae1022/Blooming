@@ -1,5 +1,6 @@
 package swcontest.dwu.blooming;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,6 +15,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import java.util.Date;
 import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.service.DailyMemoService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
+import swcontest.dwu.blooming.userSetting.UserUpdateActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.btn_location: // 위치 기록
-                intent = new Intent(this, LocationMemoActivity.class);
+//                intent = new Intent(this, LocationMemoActivity.class);
                 break;
 
             case R.id.btn_life: //일상 기록
@@ -146,5 +150,23 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
         String setResetTime = format.format(new Date(resetCal.getTimeInMillis() + AlarmManager.INTERVAL_DAY));
         Log.d("resetAlarm", "ResetHour : " + setResetTime);
+    }
+
+    //액션바 설정버튼 추가
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.btn_setting:
+                Intent intent = new Intent(MainActivity.this, UserUpdateActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
     }
 }
