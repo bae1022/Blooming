@@ -61,10 +61,9 @@ public class LocationDBManager {
         cursor = locationDB.rawQuery("SELECT distinct date FROM " + LocationDBHelper.TABLE_NAME, null);
 
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(LocationDBHelper.COL_ID));
             String date = cursor.getString(cursor.getColumnIndex(LocationDBHelper.COL_DATE));
 
-            locationList.add(new LocationDto(id, date));
+            locationList.add(new LocationDto(date));
         }
 
         cursor.close();

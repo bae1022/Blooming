@@ -69,7 +69,6 @@ public class LocationActivity extends AppCompatActivity {
     public void onClick(View v) {
 
         switch (v.getId()) {
-            // 동작 실패
             case R.id.btnLocationMemo :
                 Intent intent = new Intent(LocationActivity.this, LocationListActivity.class);
                 startActivity(intent);

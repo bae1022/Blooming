@@ -66,6 +66,8 @@
         <activity android:name=".KeepDiaryActivity" />
         <activity android:name=".CardDetailsActivity" />
         <activity android:name=".LocationActivity" />
+        <activity android:name=".LocationListActivity" />
+        <activity android:name=".LocationDetailActivity" />
         <activity android:name=".userSetting.StartActivity" />
         <activity android:name=".DailyMemoListActivity" />
         <activity android:name=".userSetting.UserUpdateActivity"/>

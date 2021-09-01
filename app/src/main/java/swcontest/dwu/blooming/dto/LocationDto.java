@@ -18,8 +18,7 @@ public class LocationDto implements Serializable {
         this.longitude = longitude;
     }
 
-    public LocationDto(long id, String date) {
-        this.id = id;
+    public LocationDto(String date) {
         this.date = date;
     }
 
