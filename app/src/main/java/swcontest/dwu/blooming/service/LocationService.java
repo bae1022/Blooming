@@ -1,169 +1,131 @@
 package swcontest.dwu.blooming.service;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.os.Build;
 import android.os.IBinder;
-import android.provider.Settings;
+import android.os.Looper;
 import android.util.Log;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 
-public class LocationService extends Service implements LocationListener {
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import swcontest.dwu.blooming.db.LocationDBManager;
+import swcontest.dwu.blooming.dto.LocationDto;
+
+public class LocationService extends Service {
 
     public static final String TAG = "LocationService";
-//    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 3; // 최소 GPS 정보 업데이트 시간 : 3분 설정(default)
-    private static final long MIN_TIME_BW_UPDATES = 3000; // 최소 GPS 정보 업데이트 시간 : 3초
-    protected LocationManager locationManager;
 
-    Context mContext;
-    Location location;
-    double latitude, longitude;
-
-    boolean isGPSEnabled = false; // 현재 GPS 사용 유무
-    boolean isNetworkEnabled = false; // 네트워크 사용 유무
-    boolean isGetLocation = false; // GPS 상태값
+    private FusedLocationProviderClient mFusedLocationClient;
+    private static final long UPDATE_INTERNAL = 1000 * 60 * 3;
+    private static final long FASTEST_UPDATE_INTERNAL = 1000 * 60 * 3;
+    private LocationDBManager dbManager;
 
     public LocationService() {
     }
 
-    public LocationService(Context context) {
-        this.mContext = context;
-        getLocation();
-    }
-
-    public Location getLocation() {
-        try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); // GPS 정보 가져오기
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER); // 현재 네트워크 상태 값 알아오기
-
-            if (!isGPSEnabled && !isNetworkEnabled) {
-            } else {
-                this.isGetLocation = true;
-
-                int hasFineLocationPermission = ContextCompat.checkSelfPermission(mContext,
-                        Manifest.permission.ACCESS_FINE_LOCATION);
-                int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(mContext,
-                        Manifest.permission.ACCESS_COARSE_LOCATION);
-                if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                        hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-                } else
-                    return null;
-                if (isNetworkEnabled) { // 네트워크 정보로부터 위치 값 가져오기
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES, 0, this);
-                    if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        if (location != null) {
-                            // 위도, 경도 저장
-                            latitude = location.getLatitude();
-                            longitude = location.getLongitude();
-                        }
-                    }
-                }
-                if (isGPSEnabled) {
-                    if (location == null) {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES, 0, this);
-                        if (locationManager != null) {
-                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
-                        }
-                    }
-                } else {
-                    showSettingAlert();
-                }
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return location;
-    }
-
-    // GPS 종료
-    public void stopUsingGPS() {
-        if (locationManager != null) {
-            locationManager.removeUpdates(LocationService.this);
-        }
-    }
-
-    // 위도 값 가져옴
-    public double getLatitude() {
-        if (location != null) {
-            latitude = location.getLatitude();
-        }
-        return latitude;
-    }
-
-    // 경도 값 가져옴
-    public double getLongitude() {
-        if (location != null) {
-            longitude = location.getLongitude();
-        }
-        return longitude;
-    }
-
-    // GPS 나 Wifi 정보가 켜져있는지 확인
-    public boolean isGetLocation() {
-        return this.isGetLocation;
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        return null;
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-    }
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "LocationService service created");
 
-    public void showSettingAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        dbManager = new LocationDBManager(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        alertDialog.setTitle("GPS 사용 유무 셋팅");
-        alertDialog.setMessage("GPS 셋팅이 되지 않았을수도 있습니다. \n 설정창으로 가시겠습니까?");
+        if (Build.VERSION.SDK_INT >= 26) {
+            String CHANNEL_ID = "my_location_channel";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    "My Location Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
 
-        // OK 를 누르게 되면 설정창으로 이동
-        alertDialog.setPositiveButton("Settings",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int which) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivity(intent);
-                    }
-                });
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
 
-        // Cancle 하면 종료
-        alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("")
+                    .setContentText("").build();
 
-        alertDialog.show();
+            startForeground(1, notification);
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand() called");
+        Log.d(TAG, "onStartCommand : called.");
+        getLocation();
         return START_STICKY;
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-//        throw new UnsupportedOperationException("Not yet implemented");
-        return null;
+    private void getLocation() {
+        LocationRequest mLocationRequestHighAccuracy = new LocationRequest();
+        mLocationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequestHighAccuracy.setInterval(UPDATE_INTERNAL);
+        mLocationRequestHighAccuracy.setFastestInterval(FASTEST_UPDATE_INTERNAL);
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "getLocation : stopping the location service.");
+            stopSelf();
+            return;
+        }
+        Log.d(TAG, "getLocation : getting location information.");
+        mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                Log.d(TAG, "onLocationResult : got location result.");
+
+                Location location = locationResult.getLastLocation();
+
+                if (location != null) {
+                    long now = System.currentTimeMillis();
+                    Date date = new Date(now);
+
+                    SimpleDateFormat sdf_day = new SimpleDateFormat("yyyy년 M월 dd일");
+                    SimpleDateFormat sdf_time = new SimpleDateFormat("kk:mm:ss");
+
+                    String getDay = sdf_day.format(date);
+                    String getTime = sdf_time.format(date);
+
+                    Log.d(TAG, getDay + " " + getTime);
+
+                    boolean result = dbManager.addLocation(new LocationDto(getDay, getTime, location.getLatitude(), location.getLongitude()));
+                    if (result) {
+                        Log.d(TAG, "저장 성공!!!");
+                    } else {
+                        Log.d(TAG, "저장 실패...");
+                    }
+                }
+            }
+        }, Looper.myLooper());
     }
+
+
 
 }

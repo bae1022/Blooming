@@ -28,6 +28,7 @@ import java.util.Date;
 
 import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.service.DailyMemoService;
+import swcontest.dwu.blooming.service.LocationService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
 import swcontest.dwu.blooming.userSetting.UserUpdateActivity;
 
@@ -54,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         alarmDailyMemo(this);
 
-
-
-
+        Intent lintent = new Intent(MainActivity.this, LocationService.class);
+        startService(lintent);
+        Log.d("LoactionService", "Location Service 시작");
     }
 
     public void onClick(View v) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.btn_location: // 위치 기록
-//                intent = new Intent(this, LocationMemoActivity.class);
+                intent = new Intent(this, LocationActivity.class);
                 break;
 
             case R.id.btn_life: //일상 기록
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     private void checkDangerousPermissions() {
         String[] permissions = {
                 Manifest.permission.RECEIVE_SMS,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
         };
 
@@ -134,6 +134,11 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, permissions[i] + " 권한이 승인됨.", Toast.LENGTH_LONG).show();
+                    if (i == permissions.length - 1) {
+                        Log.d("LoactionService", "Location Service 시작");
+                        Intent location_intent = new Intent(MainActivity.this, LocationService.class);
+                        startService(location_intent);
+                    }
                 } else {
                     Toast.makeText(this, permissions[i] + " 권한이 승인되지 않음.", Toast.LENGTH_LONG).show();
                 }
