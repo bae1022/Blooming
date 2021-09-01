@@ -13,7 +13,6 @@ import swcontest.dwu.blooming.adapter.LocationAdapter;
 import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 
-// 실패..
 public class LocationListActivity extends AppCompatActivity {
 
     ListView listView;
@@ -41,6 +40,19 @@ public class LocationListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnCurrentLocation :
+                Intent intent = new Intent(this, LocationActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btnMainGo :
+                Intent hintent = new Intent(this, MainActivity.class);
+                startActivity(hintent);
+                break;
+        }
     }
 
     @Override

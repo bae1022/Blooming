@@ -1,25 +1,12 @@
 package swcontest.dwu.blooming;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,15 +18,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
-import swcontest.dwu.blooming.service.FetchAddressIntentService;
 
-// 여기까지 넘어오지 못함..
 public class LocationDetailActivity extends AppCompatActivity {
 
     public static final String TAG = "LocationDetailActivity";
@@ -79,8 +62,8 @@ public class LocationDetailActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnLocationMemo :
-                Intent intent = new Intent(this, LocationListActivity.class);
+            case R.id.btn_memo_home :
+                Intent intent = new Intent(LocationDetailActivity.this, LocationListActivity.class);
                 startActivity(intent);
                 break;
         }

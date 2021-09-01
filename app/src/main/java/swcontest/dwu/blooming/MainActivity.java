@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
 
-//        alarmDailyMemo(this);
+        alarmDailyMemo(this);
 
         Intent lintent = new Intent(MainActivity.this, LocationService.class);
         startService(lintent);
