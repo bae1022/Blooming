@@ -140,8 +140,11 @@ public class UserPhoneActivity extends Fragment {
         row.put("month", bundle.getInt("userMonth"));
         row.put("day", bundle.getInt("userDay"));
         row.put("address", bundle.getString("userHome"));
-//        int period = Integer.parseInt(bundle.getString("userPeriod"));
-        row.put("period", 25);
+        if(bundle.getString("userPeriod") != null){
+            row.put("period", Integer.parseInt(bundle.getString("userPeriod")));
+        } else{
+            row.put("period", 50);
+        }
         row.put("wake", bundle.getString("wake_hour") + ":" + bundle.getString("wake_minute"));
         row.put("sleep", bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
         row.put("phone", et_phone.getText().toString());

@@ -45,7 +45,7 @@ public class UserPeriodActivity extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         if(bundle != null){
-            Log.d("UserPeroid(onSave)", "위치추적 주기 번들에 담기");
+            Log.d("UserPeriod(onSave)", "위치추적 주기 번들에 담기");
             bundle.putString("userPeriod", sp_period.getSelectedItem().toString());
             Log.d("UserPeriod(onSave)", "주기: " + sp_period.getSelectedItem().toString());
             Log.d("UserPeriod(Test)", "이쯤에서 이름값 있는지 확인:" + bundle.getString("userName"));
