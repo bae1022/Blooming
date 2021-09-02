@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static String hour_wake;
     public static String minute_sleep;
     public static String hour_sleep;
+    String tel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +98,32 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }else {
-                    String tel = "tel:" + "01012341234";
-                    Toast.makeText(getApplication(), "클릭", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent("android.intent.action.CALL", Uri.parse(tel)));
-//                startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                    dialog.setTitle("긴급 연락")
+                            .setMessage("보호자에게 바로 전화가 연결됩니다.\n계속 하시겠습니까?")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    UserDBHelper helper = new UserDBHelper(getApplication());
+                                    SQLiteDatabase userDB = helper.getReadableDatabase();
+                                    Cursor cursor = userDB.rawQuery("SELECT phone FROM " + helper.TABLE_NAME + ";", null);
+                                    if(cursor.moveToNext()){
+                                        tel = "tel:" + cursor.getString(cursor.getColumnIndex(helper.COL_PHONE));
+                                        Log.d("MainActivity", tel);
+                                    }
+                                    Toast.makeText(getApplication(), "전화가 연결됩니다", Toast.LENGTH_SHORT).show();
+                                    cursor.close();
+                                    helper.close();
+                                    startActivity(new Intent("android.intent.action.CALL", Uri.parse(tel)));
+                                }
+                            })
+                            .setNegativeButton("아니요", null)
+                            .create()
+                            .show();
                 }
             }
         });
+
     }
 
     public void onClick(View v) {
