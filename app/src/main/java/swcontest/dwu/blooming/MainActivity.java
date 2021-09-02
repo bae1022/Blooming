@@ -30,10 +30,14 @@ import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.service.DailyMemoService;
 import swcontest.dwu.blooming.service.LocationService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
-import swcontest.dwu.blooming.userSetting.UserNameActivity;
 import swcontest.dwu.blooming.userSetting.UserUpdateActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static String minute_wake;
+    public static String hour_wake;
+    public static String minute_sleep;
+    public static String hour_sleep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
         checkDangerousPermissions();
 
-    //일상 기록 Notification 설정_개발하실 때 주석처리 해주세요
-//        Toast.makeText(getApplicationContext(),"Service 시작", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
-//        startService(intent);
+        getUserWakeSleep(); // 사용자의 취침, 기상 시각을 받아온다.
+
+        Toast.makeText(getApplicationContext(),"Service 시작", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
+        startService(intent);
 
         //알람 종료
 //        Intent intent = new Intent(MainActivity.this,DailyMemoService.class);
@@ -53,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
-
-//        alarmDailyMemo(this);
 
         Intent lintent = new Intent(MainActivity.this, LocationService.class);
         startService(lintent);
@@ -183,68 +186,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-/*
-    public void alarmDailyMemo(Context context){
-            AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context, AlarmDailyMemoBroadcastReceiver.class);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 1, intent, 0);
 
-            ArrayList<String> userInfo = new ArrayList<String>();
-
-            userInfo = getUserWakeSleep();
-
-            String wake = userInfo.get(0);
-            String sleep = userInfo.get(1);
-
-            Log.d("확인하자", "기상시간: " + wake);
-        Log.d("확인하자", "취침시간: " + sleep);
-
-        int index = wake.indexOf(":");
-        int index2 = sleep.indexOf(":");
-
-        String minute_wake = wake.substring(wake.length() - 2, wake.length());
-        String hour_wake = wake.substring(0, index);
-
-
-        String minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
-        String hour_sleep = sleep.substring(0, index2);
-
-        Log.d(".", hour_wake);
-        Log.d(".", minute_wake);
-        Log.d(".", hour_sleep);
-        Log.d(".", minute_sleep);
-
-            Calendar alarmCal = Calendar.getInstance();
-
-        alarmCal.setTimeInMillis(System.currentTimeMillis());
-        alarmCal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(hour_wake));
-        alarmCal.set(Calendar.MINUTE, Integer.valueOf(minute_wake));
-        alarmCal.set(Calendar.SECOND, 0);
-
-// 1000*60*60*4
-
-        long now = System.currentTimeMillis();
-        Date mDate = new Date(now);
-        SimpleDateFormat simpleDate = new SimpleDateFormat("hh");
-        String getTime = simpleDate.format(mDate);
-
-        int getH = Integer.valueOf(getTime);
-
-        Log.d("확인", getTime);
-        Log.d("확인", hour_wake);
-        Log.d("확인", hour_sleep);
-
-        if (Integer.parseInt(hour_wake) <= getH && Integer.parseInt(hour_sleep) >= getH){ //조건 더 설정해야함
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmCal.getTimeInMillis(), 30, sender);
-        }
-        else{
-            alarmManager.cancel(sender);
-        }
-
-    }
-*/
     // 유저의 기상시간과 수면시간을 받아옴
-    public ArrayList<String> getUserWakeSleep() {
+    public void getUserWakeSleep() {
 
         ArrayList<String> userInfo = new ArrayList<String>();
 
@@ -266,7 +210,19 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         helper.close();
 
-        return userInfo;
-    }
+        String wake = userInfo.get(0);
+        String sleep = userInfo.get(1);
 
+        Log.d("확인하자", "기상시간: " + wake);
+        Log.d("확인하자", "취침시간: " + sleep);
+
+        int index = wake.indexOf(":");
+        int index2 = sleep.indexOf(":");
+
+         minute_wake = wake.substring(wake.length() - 2, wake.length());
+         hour_wake = wake.substring(0, index);
+
+         minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
+         hour_sleep = sleep.substring(0, index2);
+    }
 }
