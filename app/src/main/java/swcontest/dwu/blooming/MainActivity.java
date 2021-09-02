@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,24 +52,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkDangerousPermissions();
+        //사용자 초기설정 db여부에 따른 첫화면 변경
+        File userFolder = new File(String.valueOf(getDatabasePath("user.db"))); //읽고자 하는 파일 경로
+        Log.d("MainActivity", "user.db경로 확인:" + String.valueOf(getDatabasePath("user.db")));
 
-        getUserWakeSleep(); // 사용자의 취침, 기상 시각을 받아온다.
+        if(!userFolder.exists()){
+            Intent intent = new Intent(this, StartActivity.class);
+            startActivity(intent);
+        } else {
 
-        Toast.makeText(getApplicationContext(),"Service 시작", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
-        startService(intent);
+            checkDangerousPermissions();
 
-        //알람 종료
+            getUserWakeSleep(); // 사용자의 취침, 기상 시각을 받아온다.
+
+            Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
+            startService(intent);
+
+            //알람 종료
 //        Intent intent = new Intent(MainActivity.this,DailyMemoService.class);
 //        stopService(intent);
 
-        //매 12시 일상기록 없어지도록 함
-        resetDailyMemo(this);
+            //매 12시 일상기록 없어지도록 함
+            resetDailyMemo(this);
 
-        Intent lintent = new Intent(MainActivity.this, LocationService.class);
-        startService(lintent);
-        Log.d("LoactionService", "Location Service 시작");
+            Intent lintent = new Intent(MainActivity.this, LocationService.class);
+            startService(lintent);
+            Log.d("LoactionService", "Location Service 시작");
+        }
 
         //보호자 전화 연동
         ImageView iv_siren = findViewById(R.id.iv_siren);

@@ -65,8 +65,9 @@ public class UserPhoneActivity extends Fragment {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    startActivity(intent);
+                                    getActivity().finish();
+//                                    Intent intent = new Intent(getContext(), MainActivity.class);
+//                                    startActivity(intent);
                                 }
                             })
                             .show();
@@ -118,6 +119,7 @@ public class UserPhoneActivity extends Fragment {
 
         userDB.insert(helper.TABLE_NAME, null, row);
         helper.close();
+
     }
 
 }
