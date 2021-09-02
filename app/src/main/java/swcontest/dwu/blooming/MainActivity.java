@@ -7,17 +7,23 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -62,6 +68,42 @@ public class MainActivity extends AppCompatActivity {
         Intent lintent = new Intent(MainActivity.this, LocationService.class);
         startService(lintent);
         Log.d("LoactionService", "Location Service 시작");
+
+        //보호자 전화 연동
+        ImageView iv_siren = findViewById(R.id.iv_siren);
+        iv_siren.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                int check_permission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.CALL_PHONE);
+                if(check_permission == PackageManager.PERMISSION_DENIED){   //권한이 없는 경우
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if(shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)){
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                            dialog.setTitle("권한이 필요합니다.")
+                                    .setMessage("이 기능을 사용하기 위해 \"전화걸기\" 권한이 필요합니다. 계속 하시겠습니까?")
+                                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                                                requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 1000);
+                                            }
+                                        }
+                                    })
+                                    .setNegativeButton("아니요", null)
+                                    .create()
+                                    .show();
+                        } else{   //최초로 권한을 요청할 때
+                            requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, 1000); //OS에 요청
+                        }
+                    }
+                }else {
+                    String tel = "tel:" + "01012341234";
+                    Toast.makeText(getApplication(), "클릭", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent("android.intent.action.CALL", Uri.parse(tel)));
+//                startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
+                }
+            }
+        });
     }
 
     public void onClick(View v) {
