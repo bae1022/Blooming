@@ -32,8 +32,8 @@ public class UserHomeActivity extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onStop() {
+        super.onStop();
         if(bundle != null){
             Log.d("UserHome(onSave)", "집 주소 번들에 담기");
             bundle.putString("userHome", et_home.getText().toString());

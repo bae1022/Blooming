@@ -49,6 +49,28 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("StartActivity(Destroy)", "프래그먼트 액티비티 종료");
+
+        // Frag_1의 Bundel을 갖고오기
+        UserNameActivity frag_1 = new UserNameActivity();
+        bundle = frag_1.bundle;
+        if(bundle != null)
+            Log.d("Start(onDestroy)", "번들 가져옴");
+
+        Log.d("Start(onDestroy)", "최종 번들값 확인");
+        Log.d("Start(onDestroy)", "사용자 이름:" + bundle.getString("userName"));
+        Log.d("Start(onDestroy)", "년월일:" + bundle.getInt("userYear") + "/" + bundle.getInt("userMonth")+"/"+ bundle.getInt("userDay"));
+        Log.d("Start(onDestroy)", "집주소:" + bundle.getString("userHome"));
+        Log.d("Start(onDestroy)", "추적 주기:" + bundle.getString("userPeriod"));
+        Log.d("Start(onDestroy)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
+        Log.d("Start(onDestroy)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
+//        Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
+    }
+
+
 //    @Override
 //    protected void onStop() {
 //        super.onStop();

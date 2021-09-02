@@ -48,8 +48,8 @@ public class UserBirthActivity extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
+    public void onStop() {
+        super.onStop();
         if(bundle != null){
             Log.d("UserBirth(onSave)", "날짜 값 번들에 담기");
             bundle.putInt("userYear", dp_birth.getYear());
