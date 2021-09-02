@@ -30,6 +30,7 @@ import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.service.DailyMemoService;
 import swcontest.dwu.blooming.service.LocationService;
 import swcontest.dwu.blooming.userSetting.StartActivity;
+import swcontest.dwu.blooming.userSetting.UserNameActivity;
 import swcontest.dwu.blooming.userSetting.UserUpdateActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         //매 12시 일상기록 없어지도록 함
         resetDailyMemo(this);
 
-        alarmDailyMemo(this);
+//        alarmDailyMemo(this);
 
         Intent lintent = new Intent(MainActivity.this, LocationService.class);
         startService(lintent);
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
+/*
     public void alarmDailyMemo(Context context){
             AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, AlarmDailyMemoBroadcastReceiver.class);
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+*/
     // 유저의 기상시간과 수면시간을 받아옴
     public ArrayList<String> getUserWakeSleep() {
 
@@ -267,4 +268,5 @@ public class MainActivity extends AppCompatActivity {
 
         return userInfo;
     }
+
 }

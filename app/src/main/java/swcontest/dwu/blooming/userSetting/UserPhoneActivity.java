@@ -47,7 +47,7 @@ public class UserPhoneActivity extends Fragment {
             @Override
             public void onClick(View view) {
                 boolean check = true;
-                Log.d("UserPhone(btnClick)", "최종 번들값 확인");
+                Log.d("UserPhone(onCreateView)", "번들값 확인");
                 Log.d("UserPhone(confirm)", "사용자 이름:" + bundle.getString("userName"));
                 Log.d("UserPhone(confirm)", "년월일:" + bundle.getString("userYear") + "/" + bundle.getString("userMonth")+"/"+ bundle.getString("userDay"));
                 Log.d("UserPhone(confirm)", "집주소:" + bundle.getString("userHome"));
@@ -121,7 +121,13 @@ public class UserPhoneActivity extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d("UserPhone(onSave)", "번들값 확인");
+        if(bundle != null){
+            Log.d("UserPhone(onSave)", "사용자 번호 번들에 담음");
+            bundle.putString("userPhone", et_phone.getText().toString());
+            Log.d("UserPhone(onSave)", "보호자 번호: " + et_phone.getText().toString());
+        }
+
+        Log.d("UserPhone(onSave)", "최종 번들값 확인");
         Log.d("UserPhone(onSave)", "사용자 이름:" + bundle.getString("userName"));
         Log.d("UserPhone(onSave)", "년월일:" + bundle.getInt("userYear") + "/" + bundle.getInt("userMonth")+"/"+ bundle.getInt("userDay"));
         Log.d("UserPhone(onSave)", "집주소:" + bundle.getString("userHome"));
@@ -131,26 +137,26 @@ public class UserPhoneActivity extends Fragment {
         Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
 
         //DB저장
-        UserDBHelper helper = new UserDBHelper(this.getContext());
-        SQLiteDatabase userDB = helper.getWritableDatabase();
-
-        ContentValues row = new ContentValues();
-        row.put("name", bundle.getString("userName"));
-        row.put("year", bundle.getInt("userYear"));
-        row.put("month", bundle.getInt("userMonth"));
-        row.put("day", bundle.getInt("userDay"));
-        row.put("address", bundle.getString("userHome"));
-        if(bundle.getString("userPeriod") != null){
-            row.put("period", Integer.parseInt(bundle.getString("userPeriod")));
-        } else{
-            row.put("period", 50);
-        }
-        row.put("wake", bundle.getString("wake_hour") + ":" + bundle.getString("wake_minute"));
-        row.put("sleep", bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
-        row.put("phone", et_phone.getText().toString());
-
-        userDB.insert(helper.TABLE_NAME, null, row);
-        helper.close();
+//        UserDBHelper helper = new UserDBHelper(this.getContext());
+//        SQLiteDatabase userDB = helper.getWritableDatabase();
+//
+//        ContentValues row = new ContentValues();
+//        row.put("name", bundle.getString("userName"));
+//        row.put("year", bundle.getInt("userYear"));
+//        row.put("month", bundle.getInt("userMonth"));
+//        row.put("day", bundle.getInt("userDay"));
+//        row.put("address", bundle.getString("userHome"));
+//        if(bundle.getString("userPeriod") != null){
+//            row.put("period", Integer.parseInt(bundle.getString("userPeriod")));
+//        } else{
+//            row.put("period", 50);
+//        }
+//        row.put("wake", bundle.getString("wake_hour") + ":" + bundle.getString("wake_minute"));
+//        row.put("sleep", bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
+//        row.put("phone", et_phone.getText().toString());
+//
+//        userDB.insert(helper.TABLE_NAME, null, row);
+//        helper.close();
     }
 
 }

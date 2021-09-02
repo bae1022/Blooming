@@ -18,15 +18,13 @@ import java.util.ArrayList;
 import swcontest.dwu.blooming.R;
 
 public class StartActivity extends FragmentActivity{   //extends AppCompatActivity {
-//    ViewPager2 viewPager2;
-//    Button btnToggle;
 
     //Fragment위해 추가
     private ViewPager2 mPager;
     private FragmentStateAdapter pagerAdapter;
     private int num_page = 6;
 
-    //데이터 전달 위해
+    //데이터 가져오기 위해
     Bundle bundle;
 
     @Override
@@ -51,37 +49,24 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
         });
     }
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_start);
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        UserNameActivity frag = new UserNameActivity();
+//        bundle = frag.bundle;
+//        if(bundle != null) {
+//            Log.d("StartActivity(onStop)", "UserName의 번들 존재, 가져옴");
+//            Log.d("StartActivity(onStop)", "진짜 최종 번들값 확인");
+//            Log.d("StartActivity(onStop)", "사용자 이름:" + bundle.getString("userName"));
+//            Log.d("StartActivity(onStop)", "년월일:" + bundle.getInt("userYear") + "/" + bundle.getInt("userMonth")+"/"+ bundle.getInt("userDay"));
+//            Log.d("StartActivity(onStop)", "집주소:" + bundle.getString("userHome"));
+//            Log.d("StartActivity(onStop)", "추적 주기:" + bundle.getString("userPeriod"));
+//            Log.d("StartActivity(onStop)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
+//            Log.d("StartActivity(onStop)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
+////            Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
+//        }
+//
+//    }
 
-        Log.d("StartActivity", "1");
-        viewPager2 = findViewById(R.id.viewPager2);
-        btnToggle = findViewById(R.id.btnToggle);
 
-        ArrayList<UserData> list = new ArrayList<>();
-        list.add(new UserData(1, "1 page"));
-        list.add(new UserData(2, "2page"));
-        list.add(new UserData(1, "3page"));
-        list.add(new UserData(2, "4page"));
-
-        viewPager2.setAdapter(new ViewPagerAdapter(list));
-
-        btnToggle.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if(viewPager2.getOrientation() == ViewPager2.ORIENTATION_VERTICAL){
-                    btnToggle.setText("가로버전");
-                    viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-                } else{
-                    btnToggle.setText("세로버전");
-                    viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
-                }
-            }
-        });
-    }
-
-    */
 }
