@@ -81,6 +81,7 @@
         <activity android:name=".userSetting.StartActivity" />
         <activity android:name=".DailyMemoListActivity" />
         <activity android:name=".userSetting.UserUpdateActivity"/>
+        <activity android:name=".DiagnosisActivity"/>
 
         <receiver android:name=".DailyMemoResetBroadcastReceiver"
             />
