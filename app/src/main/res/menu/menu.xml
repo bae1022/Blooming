@@ -5,7 +5,12 @@
     <item
         android:id="@+id/btn_setting"
         android:icon="@drawable/setting"
-        android:title="wow"
-        app:showAsAction="always" />
+        android:title="setting_user"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/btn_alarm_setting"
+        android:title="setting_alarm"
+        app:showAsAction="never" />
 
 </menu>

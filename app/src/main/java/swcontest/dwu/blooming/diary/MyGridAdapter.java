@@ -1,6 +1,7 @@
 package swcontest.dwu.blooming.diary;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class MyGridAdapter extends ArrayAdapter {
 
     }
 
+    @SuppressLint("ResourceAsColor")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -48,6 +50,7 @@ public class MyGridAdapter extends ArrayAdapter {
         int DayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
         int displayMonth = dateCalendar.get(Calendar.MONTH) +1;
         int displayYear = dateCalendar.get(Calendar.YEAR);
+
         int currentMonth = currentDate.get(Calendar.MONTH)+1;
         int currentYear = currentDate.get(Calendar.YEAR);
 
@@ -68,6 +71,7 @@ public class MyGridAdapter extends ArrayAdapter {
         TextView EventNumber = view.findViewById(R.id.events_id);
 
         Day_Number.setText(String.valueOf(DayNo));
+        //Day_Number.setTextColor(R.color.colorPrimaryDark);
         Calendar eventCalendar = Calendar.getInstance();
         ArrayList<String> arrayList = new ArrayList<>();
         for(int i = 0; i < events.size(); i++){

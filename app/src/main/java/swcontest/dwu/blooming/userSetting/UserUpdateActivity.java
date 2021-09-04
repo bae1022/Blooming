@@ -1,23 +1,32 @@
 package swcontest.dwu.blooming.userSetting;
 
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Calendar;
 
 import swcontest.dwu.blooming.MainActivity;
 import swcontest.dwu.blooming.R;
 import swcontest.dwu.blooming.db.UserDBHelper;
 
-public class UserUpdateActivity extends AppCompatActivity {
+public class UserUpdateActivity extends AppCompatActivity{
+
+    public  static  final String TAG = "UPDATE_Broadcast";
+
     EditText db_name, db_year, db_month, db_day;
     EditText db_address, db_period, db_wake, db_sleep, db_phone;
 
@@ -90,5 +99,6 @@ public class UserUpdateActivity extends AppCompatActivity {
                 break;
         }
     }
+
 
 }

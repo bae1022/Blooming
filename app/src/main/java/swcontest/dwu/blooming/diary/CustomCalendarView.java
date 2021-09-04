@@ -41,10 +41,14 @@ public class CustomCalendarView extends LinearLayout {
     private  static  final  int MAX_CALENDAR_DAYS = 42;
     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
     Context context;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.ENGLISH);
-    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.ENGLISH);
-    SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.KOREA);
+    SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", Locale.KOREA);
+    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
+    SimpleDateFormat eventDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+
+    //오늘에 날짜 세팅
+    long now = System.currentTimeMillis();
+    final Date date = new Date(now);
 
 
     MyGridAdapter myGridAdapter;

@@ -1,7 +1,6 @@
 package swcontest.dwu.blooming;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,13 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.List;
 
 import swcontest.dwu.blooming.adapter.DailyMemoCursorAdapter;
 import swcontest.dwu.blooming.db.DailyMemoDBHelper;
-import swcontest.dwu.blooming.userSetting.StartActivity;
 
 public class DailyMemoListActivity extends AppCompatActivity {
 
@@ -65,7 +60,7 @@ public class DailyMemoListActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.write_diary: // 위치 기록
-                intent = new Intent(this, diaryActivity.class);
+                intent = new Intent(this, DiaryActivity.class);
                 break;
         }
         if (intent != null)

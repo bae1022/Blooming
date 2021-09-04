@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import swcontest.dwu.blooming.diary.CustomCalendarView;
 
-public class diaryActivity extends AppCompatActivity {
+public class DiaryActivity extends AppCompatActivity {
 
     CustomCalendarView customCalendarView;
 
