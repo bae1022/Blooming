@@ -6,8 +6,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,9 +17,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +29,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.File;
 import java.text.ParseException;
@@ -76,9 +83,12 @@ public class MainActivity extends AppCompatActivity {
             //매 12시 일상기록 없어지도록 함
             resetDailyMemo(this);
 
-            Intent lintent = new Intent(MainActivity.this, LocationService.class);
-            startService(lintent);
-            Log.d("LoactionService", "Location Service 시작");
+            if (isGPSEnabled()) {
+                startLocationService();
+            } else {
+                buildAlertMessageNoGps();
+                startLocationService();
+            }
         }
 
         //보호자 전화 연동
@@ -134,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void onClick(View v) {
@@ -211,10 +220,13 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, permissions[i] + " 권한이 승인됨.", Toast.LENGTH_LONG).show();
-                    if (i == permissions.length - 1) {
-                        Log.d("LoactionService", "Location Service 시작");
-                        Intent location_intent = new Intent(MainActivity.this, LocationService.class);
-                        startService(location_intent);
+                    if (permissions[i] == Manifest.permission.ACCESS_FINE_LOCATION) {
+                        if (isGPSEnabled()) {
+                            startLocationService();
+                        } else {
+                            buildAlertMessageNoGps();
+                            startLocationService();
+                        }
                     }
                 } else {
                     Toast.makeText(this, permissions[i] + " 권한이 승인되지 않음.", Toast.LENGTH_LONG).show();
@@ -292,11 +304,45 @@ public class MainActivity extends AppCompatActivity {
         int index = wake.indexOf(":");
         int index2 = sleep.indexOf(":");
 
-         minute_wake = wake.substring(wake.length() - 2, wake.length());
-         hour_wake = wake.substring(0, index);
+        minute_wake = wake.substring(wake.length() - 2, wake.length());
+        hour_wake = wake.substring(0, index);
 
-         minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
-         hour_sleep = sleep.substring(0, index2);
+        minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
+        hour_sleep = sleep.substring(0, index2);
+    }
+
+    public void buildAlertMessageNoGps() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        alertDialog.setTitle("GPS(위치) 사용 유무 셋팅");
+        alertDialog.setMessage("GPS(위치) 셋팅이 되지 않았을수도 있습니다. \n 설정창으로 가시겠습니까?");
+
+        // OK 를 누르게 되면 설정창으로 이동
+        alertDialog.setPositiveButton("확인",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int which) {
+                        Intent enableGpsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(enableGpsIntent);
+                    }
+                });
+
+        alertDialog.show();
+    }
+
+    public boolean isGPSEnabled(){
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+            return false;
+        }
+        return true;
+    }
+
+    public void startLocationService() {
+        Log.d("LoactionService", "Location Service 시작");
+        Intent location_intent = new Intent(MainActivity.this, LocationService.class);
+        startService(location_intent);
     }
 
 }
