@@ -2,30 +2,19 @@ package swcontest.dwu.blooming;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -41,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import swcontest.dwu.blooming.db.LocationDBManager;
+import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.dto.LocationDto;
 import swcontest.dwu.blooming.service.FetchAddressIntentService;
 
@@ -48,16 +38,18 @@ public class LocationActivity extends AppCompatActivity {
 
     public static final String TAG = "LocationActivity";
 
+    private static Handler mHandler;
     private AddressResultReceiver addressResultReceiver;
     double latitude, longitude;
-    String getDay;
+    int period;
 
+    private MapFragment mapFragment;
     private GoogleMap mGoogleMap;
     private Marker centerMarker;
     private PolylineOptions pOptions;
     private ArrayList<LatLng> arrayPoints = null;
 
-    TextView tvAddress;
+    TextView tvAddress, tvGuide2;
     LocationDBManager dbManager;
     ArrayList<LocationDto> list = null;
 
@@ -68,8 +60,9 @@ public class LocationActivity extends AppCompatActivity {
 
         addressResultReceiver = new AddressResultReceiver(new Handler());
         tvAddress = findViewById(R.id.tvAddress);
+        tvGuide2 = findViewById(R.id.tvGuide2);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallBack);
 
         pOptions = new PolylineOptions();
@@ -79,6 +72,9 @@ public class LocationActivity extends AppCompatActivity {
         dbManager = new LocationDBManager(this);
         list = new ArrayList<LocationDto>();
         arrayPoints = new ArrayList<LatLng>();
+
+        getPeriod();
+        updateMap();
     }
 
     public void onClick(View v) {
@@ -99,12 +95,13 @@ public class LocationActivity extends AppCompatActivity {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mGoogleMap = googleMap;
+            mGoogleMap.clear();
 
             long now = System.currentTimeMillis();
             Date date = new Date(now);
 
             SimpleDateFormat sdf_day = new SimpleDateFormat("yyyy년 M월 dd일");
-            getDay = sdf_day.format(date);
+            String getDay = sdf_day.format(date);
 
             list.clear();
             list.addAll(dbManager.getLocationByDate(getDay));
@@ -119,10 +116,10 @@ public class LocationActivity extends AppCompatActivity {
                 MarkerOptions options = new MarkerOptions();
                 options.position(location);
                 options.title("현재 위치");
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
                 centerMarker = mGoogleMap.addMarker(options);
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
                 centerMarker.showInfoWindow();
 
                 for (int i = 0; i < list.size(); i++) {
@@ -170,5 +167,49 @@ public class LocationActivity extends AppCompatActivity {
                 tvAddress.setText("※ 주소를 찾을 수 없습니다.");
             }
         }
+    }
+
+    private void getPeriod() {
+        period = 3;
+
+        UserDBHelper helper = new UserDBHelper(getApplication());
+        SQLiteDatabase userDB = helper.getReadableDatabase();
+        Cursor cursor = userDB.rawQuery("SELECT period FROM " + helper.TABLE_NAME + ";", null);
+        if(cursor.moveToNext()){
+            period = cursor.getInt(cursor.getColumnIndex(helper.COL_PERIOD));
+            Log.d("LocationActivity(db)", "DB에서 받아온 주기: " + period );
+        }
+        cursor.close();
+        helper.close();
+
+        tvGuide2.setText("(현재 위치와 경로는 " + period + "분마다 갱신됩니다.)");
+    }
+
+    public void updateMap() {
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                mapFragment.getMapAsync(mapReadyCallBack);
+            }
+        };
+
+        class NewRunnable implements Runnable {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000 * 60);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendEmptyMessage(0);
+                }
+            }
+        }
+
+        NewRunnable nr = new NewRunnable();
+        Thread t = new Thread(nr);
+        t.start();
     }
 }

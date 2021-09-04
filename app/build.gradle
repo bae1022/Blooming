@@ -56,4 +56,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    // 데이터베이스 내용 확인을 위함
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
+
 }

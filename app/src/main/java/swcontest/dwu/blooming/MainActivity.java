@@ -83,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
             //매 12시 일상기록 없어지도록 함
             resetDailyMemo(this);
 
-            if (isGPSEnabled()) {
-                startLocationService();
-            } else {
+            Log.d("LoactionService", "Location Service 시작");
+            Intent location_intent = new Intent(MainActivity.this, LocationService.class);
+            startService(location_intent);
+
+            if (!isGPSEnabled()) {
                 buildAlertMessageNoGps();
-                startLocationService();
             }
         }
 
@@ -220,13 +221,10 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, permissions[i] + " 권한이 승인됨.", Toast.LENGTH_LONG).show();
-                    if (permissions[i] == Manifest.permission.ACCESS_FINE_LOCATION) {
-                        if (isGPSEnabled()) {
-                            startLocationService();
-                        } else {
-                            buildAlertMessageNoGps();
-                            startLocationService();
-                        }
+                    if (i == permissions.length - 1) {
+                        Log.d("LoactionService", "Location Service 시작");
+                        Intent location_intent = new Intent(MainActivity.this, LocationService.class);
+                        startService(location_intent);
                     }
                 } else {
                     Toast.makeText(this, permissions[i] + " 권한이 승인되지 않음.", Toast.LENGTH_LONG).show();
@@ -329,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    public boolean isGPSEnabled(){
+    public boolean isGPSEnabled() {
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -338,11 +336,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
-    public void startLocationService() {
-        Log.d("LoactionService", "Location Service 시작");
-        Intent location_intent = new Intent(MainActivity.this, LocationService.class);
-        startService(location_intent);
-    }
-
 }

@@ -1,10 +1,13 @@
 package swcontest.dwu.blooming;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +41,36 @@ public class LocationListActivity extends AppCompatActivity {
                 Intent intent = new Intent(LocationListActivity.this, LocationDetailActivity.class);
                 intent.putExtra("location", location);
                 startActivity(intent);
+            }
+        });
+        
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final int pos = position;
+                AlertDialog.Builder builder = new AlertDialog.Builder(LocationListActivity.this);
+                builder.setTitle("위치 기록 삭제")
+                        .setIcon(R.drawable.ic_location)
+                        .setMessage("정말로 " + list.get(pos).getDate() + " 의 위치 기록을 삭제하시겠습니까?")
+                        .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dbManager.removeLocation(list.get(pos).getDate())) {
+                                    Toast.makeText(getApplicationContext(), list.get(pos).getDate() + "의 기록이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                    list.clear();
+                                    list.addAll(dbManager.getLocation());
+                                    adapter.notifyDataSetChanged();
+                                }
+                                else {
+                                    Toast.makeText(getApplicationContext(), list.get(pos).getDate() + "의 기록이 삭제가 실패했습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("취소", null)
+                        .setCancelable(false)
+                        .show();
+
+                return true;
             }
         });
     }

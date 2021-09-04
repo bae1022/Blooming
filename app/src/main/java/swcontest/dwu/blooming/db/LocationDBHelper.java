@@ -21,7 +21,7 @@ public class LocationDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " ( " + COL_ID + " integer primary key autoincrement,"
                 + COL_DATE + " TEXT, " + COL_TIME + " TEXT, " + COL_LAT + " FLOAT, "
                 + COL_LON + " FLOAT);");
-    }
+   }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
