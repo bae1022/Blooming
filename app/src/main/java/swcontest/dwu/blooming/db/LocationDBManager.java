@@ -16,26 +16,6 @@ public class LocationDBManager {
 
     public LocationDBManager(Context context) { dbHelper = new LocationDBHelper(context); }
 
-    public ArrayList<LocationDto> getAllLocation() {
-        ArrayList locationList = new ArrayList();
-        SQLiteDatabase locationDB = dbHelper.getReadableDatabase();
-        cursor = locationDB.rawQuery("SELECT * FROM " + LocationDBHelper.TABLE_NAME, null);
-
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(LocationDBHelper.COL_ID));
-            String date = cursor.getString(cursor.getColumnIndex(LocationDBHelper.COL_DATE));
-            String time = cursor.getString(cursor.getColumnIndex(LocationDBHelper.COL_TIME));
-            float latitude = cursor.getFloat(cursor.getColumnIndex(LocationDBHelper.COL_LAT));
-            float longitude = cursor.getFloat(cursor.getColumnIndex(LocationDBHelper.COL_LON));
-
-            locationList.add(new LocationDto(id, date, time, latitude, longitude));
-        }
-
-        cursor.close();
-        dbHelper.close();
-        return locationList;
-    }
-
     public boolean addLocation(LocationDto newLocation) {
         SQLiteDatabase locationDB = dbHelper.getWritableDatabase();
         ContentValues value = new ContentValues();
@@ -96,10 +76,10 @@ public class LocationDBManager {
         return locationList;
     }
 
-    public boolean removeLocation(long id) {
+    public boolean removeLocation(String getDate) {
         SQLiteDatabase locationDB = dbHelper.getWritableDatabase();
-        String whereClause = dbHelper.COL_ID + "=?";
-        String[] whereArgs = new String[] { String.valueOf(id) };
+        String whereClause = dbHelper.COL_DATE + "=?";
+        String[] whereArgs = new String[] { getDate };
         int result = locationDB.delete(dbHelper.TABLE_NAME, whereClause, whereArgs);
         dbHelper.close();
 
