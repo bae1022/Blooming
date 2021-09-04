@@ -21,6 +21,31 @@ public class LocationDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " ( " + COL_ID + " integer primary key autoincrement,"
                 + COL_DATE + " TEXT, " + COL_TIME + " TEXT, " + COL_LAT + " FLOAT, "
                 + COL_LON + " FLOAT);");
+
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 5월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 6월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 7월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 8월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 9월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 2월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 3월 12일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 2월 2일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 22일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 23일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 24일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 25일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 26일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 27일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 4월 28일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 5월 21일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 2일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 3일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 4일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 5일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 6일', '2020년 4월 12일', null, null);");
+//        db.execSQL("insert into " + TABLE_NAME + " values (null, '2020년 1월 7일', '2020년 4월 12일', null, null);");
    }
 
     @Override

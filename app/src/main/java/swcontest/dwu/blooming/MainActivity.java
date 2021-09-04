@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
 
-            checkDangerousPermissions();
-
             getUserWakeSleep(); // 사용자의 취침, 기상 시각을 받아온다.
 
             Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
@@ -91,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 buildAlertMessageNoGps();
             }
         }
+
+        checkDangerousPermissions();
 
         //보호자 전화 연동
         ImageView iv_siren = findViewById(R.id.iv_siren);
