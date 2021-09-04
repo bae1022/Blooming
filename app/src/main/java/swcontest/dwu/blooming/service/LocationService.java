@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
@@ -32,18 +34,16 @@ import java.util.Date;
 import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 
-import static swcontest.dwu.blooming.userSetting.StartActivity.location_period;
+import static swcontest.dwu.blooming.MainActivity.period;
 
 public class LocationService extends Service {
 
     public static final String TAG = "LocationService";
 
     private FusedLocationProviderClient mFusedLocationClient;
-    int period;
     private static long UPDATE_INTERNAL = 1000 * 60;
     private static long FASTEST_UPDATE_INTERNAL = 1000 * 60;
     private LocationDBManager dbManager;
-
 
     public LocationService() {
     }
@@ -60,7 +60,6 @@ public class LocationService extends Service {
         super.onCreate();
         Log.d(TAG, "LocationService service created");
 
-        period = location_period;
         dbManager = new LocationDBManager(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -88,8 +87,10 @@ public class LocationService extends Service {
     }
 
     private void getLocation() {
-        UPDATE_INTERNAL = 1000 * 60 * period;
-        FASTEST_UPDATE_INTERNAL = 1000 * 60 * period;
+        int location_period = period;
+
+        UPDATE_INTERNAL = 1000 * 60 * location_period;
+        FASTEST_UPDATE_INTERNAL = 1000 * 60 * location_period;
 
         LocationRequest mLocationRequestHighAccuracy = new LocationRequest();
         mLocationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -133,7 +134,4 @@ public class LocationService extends Service {
             }
         }, Looper.myLooper());
     }
-
-
-
 }

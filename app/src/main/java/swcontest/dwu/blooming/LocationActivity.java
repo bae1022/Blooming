@@ -31,7 +31,7 @@ import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 import swcontest.dwu.blooming.service.FetchAddressIntentService;
 
-import static swcontest.dwu.blooming.userSetting.StartActivity.location_period;
+import static swcontest.dwu.blooming.MainActivity.period;
 
 public class LocationActivity extends AppCompatActivity {
 
@@ -60,7 +60,7 @@ public class LocationActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress);
 
         tvGuide2 = findViewById(R.id.tvGuide2);
-        tvGuide2.setText("(현재 위치와 경로는 " + location_period + "분마다 갱신됩니다.)");
+        tvGuide2.setText("(현재 위치와 경로는 약 " + period + "분마다 갱신됩니다.)");
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallBack);
@@ -183,7 +183,7 @@ public class LocationActivity extends AppCompatActivity {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(1000 * 60);
+                        Thread.sleep(1000 * 60 * 3);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

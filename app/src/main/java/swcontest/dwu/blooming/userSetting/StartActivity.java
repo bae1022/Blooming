@@ -18,7 +18,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 
 import swcontest.dwu.blooming.R;
-import swcontest.dwu.blooming.db.UserDBHelper;
 
 public class StartActivity extends FragmentActivity{   //extends AppCompatActivity {
 
@@ -26,8 +25,6 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
     private ViewPager2 mPager;
     private FragmentStateAdapter pagerAdapter;
     private int num_page = 6;
-
-    public static int location_period;
 
     //데이터 가져오기 위해
     Bundle bundle;
@@ -73,9 +70,6 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
         Log.d("Start(onDestroy)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
         Log.d("Start(onDestroy)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
 //        Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
-
-        location_period = Integer.parseInt(bundle.getString("userPeriod")); // 유저가 설정한 위치 추적 주기를 받아옴
-        Log.d("Location", "받아온 추적 주기 값은 : " + location_period);
     }
 
 //    @Override
@@ -96,6 +90,4 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
 //        }
 //
 //    }
-
-
 }

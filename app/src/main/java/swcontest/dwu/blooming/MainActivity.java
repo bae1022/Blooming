@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static String hour_wake;
     public static String minute_sleep;
     public static String hour_sleep;
+    public static int period;
     String tel;
 
     @Override
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             getUserWakeSleep(); // 사용자의 취침, 기상 시각을 받아온다.
+            getPeriod();
 
             Toast.makeText(getApplicationContext(), "Service 시작", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this, DailyMemoService.class);
@@ -261,6 +263,20 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public void getPeriod() {
+        period = 5;
+
+        UserDBHelper helper = new UserDBHelper(getApplicationContext());
+        SQLiteDatabase userDB = helper.getReadableDatabase();
+        Cursor cursor = userDB.rawQuery("SELECT period FROM " + helper.TABLE_NAME + ";", null);
+        if (cursor.moveToNext()){
+            period = cursor.getInt(cursor.getColumnIndex(helper.COL_PERIOD));
+            Log.d("Location", "DB에서 받아온 주기: " + period );
+        }
+        cursor.close();
+        helper.close();
     }
 
     // 유저의 기상시간과 수면시간을 받아옴
