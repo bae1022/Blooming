@@ -66,7 +66,7 @@ public class LocationActivity extends AppCompatActivity {
         mapFragment.getMapAsync(mapReadyCallBack);
 
         pOptions = new PolylineOptions();
-        pOptions.color(Color.RED);
+        pOptions.color(Color.rgb(255, 102, 0));
         pOptions.width(5);
 
         dbManager = new LocationDBManager(this);
@@ -114,10 +114,9 @@ public class LocationActivity extends AppCompatActivity {
                 MarkerOptions options = new MarkerOptions();
                 options.position(location);
                 options.title("현재 위치");
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
                 centerMarker = mGoogleMap.addMarker(options);
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
                 centerMarker.showInfoWindow();
 
                 for (int i = 0; i < list.size(); i++) {
@@ -126,6 +125,7 @@ public class LocationActivity extends AppCompatActivity {
                 }
                 pOptions.addAll(arrayPoints);
                 mGoogleMap.addPolyline(pOptions);
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
             }
 
             mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -183,7 +183,7 @@ public class LocationActivity extends AppCompatActivity {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(1000 * 60 * 3);
+                        Thread.sleep(1000 * 60 * 2);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

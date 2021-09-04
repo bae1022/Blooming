@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static String hour_wake;
     public static String minute_sleep;
     public static String hour_sleep;
-    public static int period;
+    public static int period = 5;
     String tel;
 
     @Override
@@ -266,8 +266,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPeriod() {
-        period = 5;
-
         UserDBHelper helper = new UserDBHelper(getApplicationContext());
         SQLiteDatabase userDB = helper.getReadableDatabase();
         Cursor cursor = userDB.rawQuery("SELECT period FROM " + helper.TABLE_NAME + ";", null);

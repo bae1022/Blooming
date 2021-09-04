@@ -84,14 +84,14 @@ public class LocationDetailActivity extends AppCompatActivity {
                 MarkerOptions options_start = new MarkerOptions();
                 options_start.position(startLocation);
                 options_start.title("시작 지점");
-                options_start.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                options_start.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 startMarker = mGoogleMap.addMarker(options_start);
                 startMarker.showInfoWindow();
 
                 MarkerOptions options_end = new MarkerOptions();
                 options_end.position(endLocation);
                 options_end.title("마자막 지점");
-                options_end.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                options_end.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
                 endMarker = mGoogleMap.addMarker(options_end);
                 endMarker.showInfoWindow();
 
