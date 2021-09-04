@@ -1,7 +1,9 @@
 package swcontest.dwu.blooming.service;
 
 
+import android.content.Context;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -18,8 +20,7 @@ public class DailyMemoServiceThread extends Thread {
 
     Handler handler;
     boolean isRun = true;
-
-    UserDBHelper helper;
+    int state = 0;
 
     public DailyMemoServiceThread(Handler handler){
         this.handler = handler;
@@ -34,7 +35,6 @@ public class DailyMemoServiceThread extends Thread {
     public void run() {
 
 //        if (getH - Integer.parseInt(hour_wake) >= 0 && (getH - Integer.parseInt(hour_wake)) % 4 == 0 && getM == Integer.parseInt(minute_wake) && getSeconds.equals("00")) {
-
         while (isRun) {
             //현재 시간 구함
             long now = System.currentTimeMillis();
@@ -50,25 +50,42 @@ public class DailyMemoServiceThread extends Thread {
 
             int getH = Integer.valueOf(getHour);
             int getM = Integer.valueOf(getMinute);
+            int getS = Integer.valueOf(getSeconds);
+//
+//            Log.d("따란1", String.valueOf(Integer.parseInt(hour_wake)));
+//            Log.d("따란2", String.valueOf(Integer.parseInt(minute_wake)));
+//
+//            Log.d("따란3", String.valueOf(getSeconds));
+//            Log.d("따란4", String.valueOf(minute_sleep));
+//            Log.d("따란5", String.valueOf(Integer.parseInt(hour_sleep)));
+//            Log.d("따란6", String.valueOf(Integer.parseInt(minute_sleep)));
+//            Log.d("따란7", String.valueOf(getH));
+//
+//            Log.d("따란8", String.valueOf(getM));
+//            Log.d("따란9",  String.valueOf(getS));
 
-//            (getH - Integer.parseInt(hour_wake)) % 3 == 0 && 여기 아래줄부터 if문 주석처리 풀기 나연아!!!!!!!!!!!!!!!!!!!!!!!
-//            if (getH - Integer.parseInt(hour_wake) > 0 &&  (getH - Integer.parseInt(hour_wake)) % 3 == 0 && getM == Integer.parseInt(minute_wake) && getSeconds.equals("00")) {
-//                if (Integer.parseInt(hour_sleep) > getH){
-//                    handler.sendEmptyMessage(0);
-//                }
-//                else if (Integer.parseInt(hour_sleep) == getH){
-//                    if (Integer.parseInt(minute_sleep) >= getM){
-//                        handler.sendEmptyMessage(0);
-//                    }
-//                }
-//            }
+             // 알람 울린 후엔 1로.
+////
+            if (getH - Integer.parseInt(hour_wake) > 0 && getM == Integer.parseInt(minute_wake) && (getH - Integer.parseInt(hour_wake)) % 3 == 0 && state == 0) {
+                if (Integer.parseInt(hour_sleep) > getH) {
+                    handler.sendEmptyMessage(0);
+                    state = 1;
+                } else if (Integer.parseInt(hour_sleep) == getH) {
+                    if (Integer.parseInt(minute_sleep) >= getM) {
+                        handler.sendEmptyMessage(0);
+                        state = 1;
+                    }
+                }
+            }
             try {
-//                    Thread.sleep(1000 * 60 * 60 * 1); //3시간
+                    if (state == 1){
+                        Thread.sleep(1000 * 60 * 60 * 3); //3시간
+                        state = 0;
+                    }
 
                 } catch (Exception e) {
                     }
                 }
             }
-
 
     }

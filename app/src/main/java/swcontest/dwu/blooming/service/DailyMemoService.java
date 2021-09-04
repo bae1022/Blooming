@@ -1,5 +1,6 @@
 package swcontest.dwu.blooming.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -19,11 +21,17 @@ import androidx.core.app.NotificationManagerCompat;
 import swcontest.dwu.blooming.DailyMemoActivity;
 import swcontest.dwu.blooming.R;
 
+import static android.os.PowerManager.ACQUIRE_CAUSES_WAKEUP;
+
 public class DailyMemoService extends Service {
 
     NotificationManager noti_m;
     DailyMemoServiceThread thread;
     Notification noti;
+
+//    PowerManager powerManager;
+//
+//    PowerManager.WakeLock wakeLock;
 
     public DailyMemoService() {
     }
@@ -83,10 +91,18 @@ public class DailyMemoService extends Service {
 
             int notificationId = 100;
 
-            notificationManager.notify(0, builder.build());
+            //화면깨우기
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE );
+            @SuppressLint("InvalidWakeLockTag")
+            PowerManager.WakeLock wakeLock = pm.newWakeLock( PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG" );
+            wakeLock.acquire(3000);
+
+
+            notificationManager.notify(notificationId, builder.build());
 
             //토스트 띄우기
             Toast.makeText(DailyMemoService.this, "작동 ok", Toast.LENGTH_LONG).show();
+
         }
     }
 }
