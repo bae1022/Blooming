@@ -34,14 +34,21 @@ public class UserNameActivity extends Fragment {
 
         //데이터 전달
         et_name = rootView.findViewById(R.id.et_name);
-        bundle = new Bundle();
+//        bundle = new Bundle();
 
         return rootView;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+
+        bundle = new Bundle();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         if(et_name.getText().toString().equals("")){
             //입력 필드가 공백일 때 작동 안함
             Log.d("UserName(onStop)", "et값이 없다");
@@ -59,14 +66,12 @@ public class UserNameActivity extends Fragment {
 //        ContentValues row = new ContentValues();
 //        row.put("name", et_name.getText().toString());
 //        db.insert()
-
         //프래그먼트 데이터 전달을 하고 싶었는데 무슨 짓을 한건진 잘 모르겠음
 //        Fragment frag_2 = new UserPhoneActivity();         //프래그먼트 생성
 //        Bundle bundle = new Bundle();              // 파라미터: 전달한 데이터 개수
 //        bundle.putString("userName", et_name.getText().toString());
 //        frag_2.setArguments(bundle);
 //        Log.d("UserName액티비티(onSave): ", et_name.getText().toString() + "를 번들에 넣음4");
-
         Toast.makeText(this.getContext(),"UserName액티비티" + et_name.getText().toString(), Toast.LENGTH_SHORT).show();
         outState.putString("userName", et_name.getText().toString());
     }

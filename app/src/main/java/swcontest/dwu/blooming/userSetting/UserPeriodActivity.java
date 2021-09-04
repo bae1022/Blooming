@@ -33,17 +33,27 @@ public class UserPeriodActivity extends Fragment {
 
         sp_period = rootView.findViewById(R.id.spinner);
 
-        UserNameActivity frag_3 = new UserNameActivity();
-        bundle = frag_3.bundle;
-        if(bundle != null)
-            Log.d("UserPeriod(onCreate)", "frag_3 번들 가져옴");
+//        UserNameActivity frag_3 = new UserNameActivity();
+//        bundle = frag_3.bundle;
+//        if(bundle != null)
+//            Log.d("UserPeriod(onCreate)", "frag_3 번들 가져옴");
 
         return rootView;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+
+        UserNameActivity frag_3 = new UserNameActivity();
+        bundle = frag_3.bundle;
+        if(bundle != null)
+            Log.d("UserPeriod(onCreate)", "frag_3 번들 가져옴");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         if(bundle != null){
             Log.d("UserPeriod(onStop)", "위치추적 주기 번들에 담기");
             bundle.putString("userPeriod", sp_period.getSelectedItem().toString());

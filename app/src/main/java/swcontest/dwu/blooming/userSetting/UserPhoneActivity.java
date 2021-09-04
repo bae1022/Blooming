@@ -35,19 +35,19 @@ public class UserPhoneActivity extends Fragment {
 
         et_phone = rootView.findViewById(R.id.et_phone);
 
-        //Bundle가져오기
-        UserNameActivity frag_5 = new UserNameActivity();
-        bundle = frag_5.bundle;
-        if(bundle != null){
-            Log.d("UserPhone(onCreateView)", "frag_5에서 번들 가져옴");
-        }
+//        //Bundle가져오기
+//        UserNameActivity frag_5 = new UserNameActivity();
+//        bundle = frag_5.bundle;
+//        if(bundle != null){
+//            Log.d("UserPhone(onCreateView)", "frag_5에서 번들 가져옴");
+//        }
 
         Button btn_done = rootView.findViewById(R.id.btn_done);
         btn_done.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                boolean check = true;
-                Log.d("UserPhone(onCreateView)", "onClick");
+                                        @Override
+                                        public void onClick(View view) {
+                                            boolean check = true;
+                                            Log.d("UserPhone(onCreateView)", "onClick");
 //                Log.d("UserPhone(onCreateView)", "사용자 이름:" + bundle.getString("userName"));
 //                Log.d("UserPhone(onCreateView)", "년월일:" + bundle.getString("userYear") + "/" + bundle.getString("userMonth")+"/"+ bundle.getString("userDay"));
 //                Log.d("UserPhone(onCreateView)", "집주소:" + bundle.getString("userHome"));
@@ -56,26 +56,57 @@ public class UserPhoneActivity extends Fragment {
 //                Log.d("UserPhone(onCreateView)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
 //                Log.d("UserPhone(onCreateView)", "비상연락망:" + et_phone.getText().toString());
 
-                if(check){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("환영합니다^^")
-                            .setMessage("사용자 초기설정이 완료되었습니다. \n개화와 함께 하루를 만들어 가보세요!")
-                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    getActivity().finish();
+                                            if (bundle.getString("userName") == null || bundle.getString("userName").equals("")){
+                                                StartActivity.fragmentChange(0);
+                                                Toast.makeText(getActivity(), "이름을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else if (bundle.getString("userHome") == null || bundle.getString("userHome").equals("")){
+                                                StartActivity.fragmentChange(2);
+                                                Toast.makeText(getActivity(), "주소를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else if (bundle.getString("wake_hour") == null || bundle.getString("wake_hour").equals("")
+                                            || bundle.getString("wake_minute") == null || bundle.getString("wake_minute").equals("")
+                                            || bundle.getString("sleep_hour") == null || bundle.getString("sleep_hour").equals("")
+                                            || bundle.getString("sleep_minute") == null || bundle.getString("sleep_minute").equals("") ){
+                                                StartActivity.fragmentChange(4);
+                                                Toast.makeText(getActivity(), "기상 및 수면 시간을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else if ( et_phone.getText().toString().equals("")){
+                                                Toast.makeText(getActivity(), "보호자 번호를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                if (check) {
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                                    builder.setTitle("환영합니다^^")
+                                                            .setMessage("사용자 초기설정이 완료되었습니다. \n개화와 함께 하루를 만들어 가보세요!")
+                                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                                    getActivity().finish();
 //                                    Intent intent = new Intent(getContext(), MainActivity.class);
 //                                    startActivity(intent);
-                                }
-                            })
-                            .show();
-                }
-
-                }
-            }
+                                                                }
+                                                            })
+                                                            .show();
+                                                }
+                                            }
+                                        }
+                                    }
         );
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Bundle가져오기
+        UserNameActivity frag_5 = new UserNameActivity();
+        bundle = frag_5.bundle;
+        if(bundle != null){
+            Log.d("UserPhone(onCreateView)", "frag_5에서 번들 가져옴");
+        }
     }
 
     @Override

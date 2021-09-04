@@ -1,7 +1,5 @@
 package swcontest.dwu.blooming.userSetting;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +20,7 @@ import swcontest.dwu.blooming.R;
 public class StartActivity extends FragmentActivity{   //extends AppCompatActivity {
 
     //Fragment위해 추가
-    private ViewPager2 mPager;
+    private static ViewPager2 mPager;
     private FragmentStateAdapter pagerAdapter;
     private int num_page = 6;
 
@@ -72,6 +70,7 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
 //        Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
     }
 
+
 //    @Override
 //    protected void onStop() {
 //        super.onStop();
@@ -89,5 +88,15 @@ public class StartActivity extends FragmentActivity{   //extends AppCompatActivi
 ////            Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
 //        }
 //
-//    }
+
+    public static void fragmentChange(int index) {
+        if (index == 0) {
+            mPager.setCurrentItem(0);
+        }
+        else if (index == 2){
+            mPager.setCurrentItem(2);
+        } else if (index == 4){
+            mPager.setCurrentItem(4);
+        }
+    }
 }

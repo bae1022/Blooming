@@ -33,17 +33,27 @@ public class UserSleepActivity extends Fragment {
         et_sleep_hour = rootView.findViewById(R.id.et_sleep_hour);
         et_sleep_minute = rootView.findViewById(R.id.et_sleep_minute);
 
-        UserNameActivity frag_4 = new UserNameActivity();
-        bundle = frag_4.bundle;
-        if(bundle != null)
-            Log.d("UserSleep(onCreateView)", "frag4에서 번들 가져옴");
+//        UserNameActivity frag_4 = new UserNameActivity();
+//        bundle = frag_4.bundle;
+//        if(bundle != null)
+//            Log.d("UserSleep(onCreateView)", "frag4에서 번들 가져옴");
 
         return rootView;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+
+        UserNameActivity frag_4 = new UserNameActivity();
+        bundle = frag_4.bundle;
+        if(bundle != null)
+            Log.d("UserSleep(onCreateView)", "frag4에서 번들 가져옴");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         if(bundle != null){
             Log.d("UserSleep(onStop)", "취침/기상시간 번들에 담기");
             bundle.putString("wake_hour", et_wake_hour.getText().toString());
