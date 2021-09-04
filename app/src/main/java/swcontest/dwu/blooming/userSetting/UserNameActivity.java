@@ -25,7 +25,7 @@ import swcontest.dwu.blooming.db.UserDBHelper;
 public class UserNameActivity extends Fragment {
     EditText et_name;
     String name;
-    public static Bundle bundle;
+    static Bundle bundle;
 
     //프래그먼트 처음 시작하는 생명주기
     @Override
