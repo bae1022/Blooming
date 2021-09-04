@@ -2,16 +2,30 @@ package swcontest.dwu.blooming;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -36,6 +50,7 @@ public class LocationActivity extends AppCompatActivity {
 
     private AddressResultReceiver addressResultReceiver;
     double latitude, longitude;
+    String getDay;
 
     private GoogleMap mGoogleMap;
     private Marker centerMarker;
@@ -67,7 +82,6 @@ public class LocationActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.btnLocationMemo :
                 Intent intent = new Intent(LocationActivity.this, LocationListActivity.class);
@@ -90,7 +104,7 @@ public class LocationActivity extends AppCompatActivity {
             Date date = new Date(now);
 
             SimpleDateFormat sdf_day = new SimpleDateFormat("yyyy년 M월 dd일");
-            String getDay = sdf_day.format(date);
+            getDay = sdf_day.format(date);
 
             list.clear();
             list.addAll(dbManager.getLocationByDate(getDay));
@@ -99,7 +113,7 @@ public class LocationActivity extends AppCompatActivity {
                 latitude = list.get(list.size() - 1).getLatitude();
                 longitude = list.get(list.size() - 1).getLongitude();
 
-                LatLng location = new LatLng(latitude, longitude); // 현재 화면에 찍힌 포인트로부터 위도와 경도를 알려줌
+                LatLng location = new LatLng(latitude, longitude);
                 Log.v(TAG, "위도 : " + latitude + ", 경도 : " + longitude);
 
                 MarkerOptions options = new MarkerOptions();
