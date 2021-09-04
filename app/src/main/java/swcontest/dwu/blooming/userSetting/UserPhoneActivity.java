@@ -27,7 +27,6 @@ import swcontest.dwu.blooming.db.UserDBHelper;
 public class UserPhoneActivity extends Fragment {
     EditText et_phone;
     Bundle bundle;
-    private UserData user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +34,6 @@ public class UserPhoneActivity extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.setting_phone, container, false);
 
         et_phone = rootView.findViewById(R.id.et_phone);
-        user = new UserData();
 
         //Bundle가져오기
         UserNameActivity frag_5 = new UserNameActivity();
@@ -84,19 +82,19 @@ public class UserPhoneActivity extends Fragment {
     public void onStop() {
         super.onStop();
         if(bundle != null){
-            Log.d("UserPhone(onSave)", "사용자 번호 번들에 담음");
+            Log.d("UserPhone(onStop)", "사용자 번호 번들에 담음");
             bundle.putString("userPhone", et_phone.getText().toString());
-            Log.d("UserPhone(onSave)", "보호자 번호: " + et_phone.getText().toString());
+            Log.d("UserPhone(onStop)", "보호자 번호: " + et_phone.getText().toString());
         }
 
-        Log.d("UserPhone(onSave)", "---최종 번들값 확인---");
-        Log.d("UserPhone(onSave)", "사용자 이름:" + bundle.getString("userName"));
-        Log.d("UserPhone(onSave)", "년월일:" + bundle.getInt("userYear") + "/" + bundle.getInt("userMonth")+"/"+ bundle.getInt("userDay"));
-        Log.d("UserPhone(onSave)", "집주소:" + bundle.getString("userHome"));
-        Log.d("UserPhone(onSave)", "추적 주기:" + bundle.getString("userPeriod"));
-        Log.d("UserPhone(onSave)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
-        Log.d("UserPhone(onSave)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
-        Log.d("UserPhone(onSave)", "비상연락망:" + et_phone.getText().toString());
+        Log.d("UserPhone(onStop)", "---최종 번들값 확인---");
+        Log.d("UserPhone(onStop)", "사용자 이름:" + bundle.getString("userName"));
+        Log.d("UserPhone(onStop)", "년월일:" + bundle.getInt("userYear") + "/" + bundle.getInt("userMonth")+"/"+ bundle.getInt("userDay"));
+        Log.d("UserPhone(onStop)", "집주소:" + bundle.getString("userHome"));
+        Log.d("UserPhone(onStop)", "추적 주기:" + bundle.getString("userPeriod"));
+        Log.d("UserPhone(onStop)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
+        Log.d("UserPhone(onStop)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
+        Log.d("UserPhone(onStop)", "비상연락망:" + et_phone.getText().toString());
 
         //DB저장
         UserDBHelper helper = new UserDBHelper(this.getContext());
