@@ -42,7 +42,7 @@ public class UserBirthActivity extends Fragment {
         UserNameActivity frag_1 = new UserNameActivity();
         bundle = frag_1.bundle;
         if(bundle != null)
-            Log.d("UserBirth(onCreateView)", "frag_1에서 번들 가져옴");
+            Log.d("UserBirth(onCreateView)", "번들 존재");
 
         return rootView;
     }
@@ -51,11 +51,11 @@ public class UserBirthActivity extends Fragment {
     public void onStop() {
         super.onStop();
         if(bundle != null){
-            Log.d("UserBirth(onSave)", "날짜 값 번들에 담기");
+            Log.d("UserBirth(onStop)", "날짜 값 번들에 담기");
             bundle.putInt("userYear", dp_birth.getYear());
             bundle.putInt("userMonth", dp_birth.getMonth()+1);
             bundle.putInt("userDay", dp_birth.getDayOfMonth());
-            Log.d("UserBirth(onSave)", "년월일: " + dp_birth.getYear() + "/" + dp_birth.getMonth() + "/" + dp_birth.getDayOfMonth());
+            Log.d("UserBirth(onStop)", "년월일: " + dp_birth.getYear() + "/" + dp_birth.getMonth() + "/" + dp_birth.getDayOfMonth());
         }
     }
 

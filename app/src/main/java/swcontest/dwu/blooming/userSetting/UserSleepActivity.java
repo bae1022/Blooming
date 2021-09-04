@@ -45,13 +45,13 @@ public class UserSleepActivity extends Fragment {
     public void onStop() {
         super.onStop();
         if(bundle != null){
-            Log.d("UserSleep(onSave)", "취침/기상시간 번들에 담기");
+            Log.d("UserSleep(onStop)", "취침/기상시간 번들에 담기");
             bundle.putString("wake_hour", et_wake_hour.getText().toString());
             bundle.putString("wake_minute", et_wake_minute.getText().toString());
-            Log.d("UserSleep(onSave)", "기상시간: " + et_wake_hour.getText().toString()  +":" + et_wake_minute.getText().toString());
+            Log.d("UserSleep(onStop)", "기상시간: " + et_wake_hour.getText().toString()  +":" + et_wake_minute.getText().toString());
             bundle.putString("sleep_hour", et_sleep_hour.getText().toString());
             bundle.putString("sleep_minute", et_sleep_minute.getText().toString());
-            Log.d("UserSleep(onSave)", "취침시간: " + et_sleep_hour.getText().toString()  +":" + et_sleep_minute.getText().toString());
+            Log.d("UserSleep(onStop)", "취침시간: " + et_sleep_hour.getText().toString()  +":" + et_sleep_minute.getText().toString());
 
         }
     }

@@ -35,9 +35,9 @@ public class UserHomeActivity extends Fragment {
     public void onStop() {
         super.onStop();
         if(bundle != null){
-            Log.d("UserHome(onSave)", "집 주소 번들에 담기");
+            Log.d("UserHome(onStop)", "집 주소 번들에 담기");
             bundle.putString("userHome", et_home.getText().toString());
-            Log.d("UserHome(onSave)", "집 주소: " + et_home.getText().toString());
+            Log.d("UserHome(onStop)", "집 주소: " + et_home.getText().toString());
         }
     }
 }
