@@ -194,7 +194,7 @@ public class CustomCalendarView extends LinearLayout {
         SQLiteDatabase database = dbOpenHelper.getWritableDatabase();
         dbOpenHelper.SaveEvent(event,time,date,month,year,database);
         dbOpenHelper.close();
-        Toast.makeText(context, "Event Saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "기록 성공", Toast.LENGTH_SHORT).show();
     }
 
     private void IntializeLayout(){
