@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,9 +28,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import swcontest.dwu.blooming.db.LocationDBManager;
-import swcontest.dwu.blooming.db.UserDBHelper;
 import swcontest.dwu.blooming.dto.LocationDto;
 import swcontest.dwu.blooming.service.FetchAddressIntentService;
+
+import static swcontest.dwu.blooming.userSetting.StartActivity.location_period;
 
 public class LocationActivity extends AppCompatActivity {
 
@@ -41,7 +40,6 @@ public class LocationActivity extends AppCompatActivity {
     private static Handler mHandler;
     private AddressResultReceiver addressResultReceiver;
     double latitude, longitude;
-    int period;
 
     private MapFragment mapFragment;
     private GoogleMap mGoogleMap;
@@ -60,7 +58,9 @@ public class LocationActivity extends AppCompatActivity {
 
         addressResultReceiver = new AddressResultReceiver(new Handler());
         tvAddress = findViewById(R.id.tvAddress);
+
         tvGuide2 = findViewById(R.id.tvGuide2);
+        tvGuide2.setText("(현재 위치와 경로는 " + location_period + "분마다 갱신됩니다.)");
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallBack);
@@ -73,7 +73,6 @@ public class LocationActivity extends AppCompatActivity {
         list = new ArrayList<LocationDto>();
         arrayPoints = new ArrayList<LatLng>();
 
-        getPeriod();
         updateMap();
     }
 
@@ -95,7 +94,6 @@ public class LocationActivity extends AppCompatActivity {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mGoogleMap = googleMap;
-            mGoogleMap.clear();
 
             long now = System.currentTimeMillis();
             Date date = new Date(now);
@@ -169,27 +167,13 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
-    private void getPeriod() {
-        period = 3;
-
-        UserDBHelper helper = new UserDBHelper(getApplication());
-        SQLiteDatabase userDB = helper.getReadableDatabase();
-        Cursor cursor = userDB.rawQuery("SELECT period FROM " + helper.TABLE_NAME + ";", null);
-        if(cursor.moveToNext()){
-            period = cursor.getInt(cursor.getColumnIndex(helper.COL_PERIOD));
-            Log.d("LocationActivity(db)", "DB에서 받아온 주기: " + period );
-        }
-        cursor.close();
-        helper.close();
-
-        tvGuide2.setText("(현재 위치와 경로는 " + period + "분마다 갱신됩니다.)");
-    }
-
     public void updateMap() {
         mHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
+                mGoogleMap.clear();
+                Log.d("Location", "mapReadyCallBack");
                 mapFragment.getMapAsync(mapReadyCallBack);
             }
         };
