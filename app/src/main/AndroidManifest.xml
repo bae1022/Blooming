@@ -70,7 +70,6 @@
             -->
         </activity>
         <activity android:name=".diaryActivity" />
-        <activity android:name=".KeepDiaryActivity" />
         <activity android:name=".CardDetailsActivity" />
         <activity android:name=".LocationActivity" />
         <activity android:name=".LocationListActivity" />
