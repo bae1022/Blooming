@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.btn_check:
-
+                intent = new Intent(this, DiagnosisActivity.class);
                 break;
 
             case R.id.btn_setting: //초기화면
@@ -283,8 +283,8 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         helper.close();
 
-        String wake = userInfo.get(0);
-        String sleep = userInfo.get(1);
+        String wake = userInfo.get(userInfo.size() - 2);
+        String sleep = userInfo.get(userInfo.size() - 1);
 
         Log.d("확인하자", "기상시간: " + wake);
         Log.d("확인하자", "취침시간: " + sleep);
