@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.btn_check:
-
+                intent = new Intent(this, DiagnosisActivity.class);
                 break;
 
             case R.id.btn_setting: //초기화면
