@@ -25,24 +25,17 @@
                 android:textStyle="bold"
                 android:text="Date"
                 android:textSize="15dp"/>
+
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@android:color/holo_purple"
                 android:id="@+id/eventname"
-                android:textStyle="bold"
-                android:text="Event"
-                android:textSize="40dp"/>
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="Event"
                 android:textColor="@android:color/holo_purple"
-                android:id="@+id/tvDiary"
-                android:textStyle="italic"
-                android:text="Diary"
-                android:textSize="15dp"/>
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
