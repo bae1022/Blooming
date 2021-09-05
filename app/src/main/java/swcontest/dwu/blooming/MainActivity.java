@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public static String hour_sleep;
     public static int period = 5;
     String tel;
+    String class_name = LocationService.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +78,13 @@ public class MainActivity extends AppCompatActivity {
             //매 12시 일상기록 없어지도록 함
             resetDailyMemo(this);
 
-            Log.d("LoactionService", "Location Service 시작");
-            Intent location_intent = new Intent(MainActivity.this, LocationService.class);
-            startService(location_intent);
+            if (!isServiceRunning(class_name)) {
+                Log.d("LoactionService", "Location Service 시작");
+                Intent location_intent = new Intent(MainActivity.this, LocationService.class);
+                startService(location_intent);
+            } else {
+                Log.d("LoactionService", "Location Service는 이미 실행중..");
+            }
 
             if (!isGPSEnabled()) {
                 buildAlertMessageNoGps();
@@ -217,9 +223,13 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, permissions[i] + " 권한이 승인됨.", Toast.LENGTH_LONG).show();
                     if (i == permissions.length - 1) {
-                        Log.d("LoactionService", "Location Service 시작");
-                        Intent location_intent = new Intent(MainActivity.this, LocationService.class);
-                        startService(location_intent);
+                        if (!isServiceRunning(class_name)) {
+                            Log.d("LoactionService", "Location Service 시작");
+                            Intent location_intent = new Intent(MainActivity.this, LocationService.class);
+                            startService(location_intent);
+                        } else {
+                            Log.d("LoactionService", "Location Service는 이미 실행중..");
+                        }
                     }
                 } else {
                     Toast.makeText(this, permissions[i] + " 권한이 승인되지 않음.", Toast.LENGTH_LONG).show();
@@ -342,5 +352,17 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    // 서비스 실행 유무 확인
+    public boolean isServiceRunning(String class_name) {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (class_name.equals(service.service.getClassName())) {
+                Log.d("LocationService", "현재 실행중인 서비스는 " + service.service.getClassName());
+                return true;
+            }
+        }
+        return false;
     }
 }

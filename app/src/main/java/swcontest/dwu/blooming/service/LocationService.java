@@ -1,6 +1,7 @@
 package swcontest.dwu.blooming.service;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -126,6 +127,7 @@ public class LocationService extends Service {
 
                     boolean result = dbManager.addLocation(new LocationDto(getDay, getTime, location.getLatitude(), location.getLongitude()));
                     if (result) {
+                        Log.d(TAG, "현재 위치의 위도 : " + location.getLatitude() + ", 경도 : " + location.getLongitude());
                         Log.d(TAG, "저장 성공!!!");
                     } else {
                         Log.d(TAG, "저장 실패...");
