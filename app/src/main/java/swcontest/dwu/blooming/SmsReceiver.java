@@ -42,8 +42,8 @@ public class SmsReceiver extends BroadcastReceiver {
                         || split[1].startsWith("KB") || split[1].startsWith("우리") || split[1].startsWith("MG") || split[1].startsWith("BC") || split[1].startsWith("IBK")){
                         String title = split[5];
                         String price = split[3];
-                        String[] cut = price.split(" ");
-                        price = cut[0];
+                        String[] priceSplit = price.split("원");
+                        price = priceSplit[0] + "원";
                         String receivedDate = split[4];
 //                        String receivedDate = new Date(messages[0].getTimestampMillis());
                         // 로그를 찍어보는 과정이므로 생략해도 됨
