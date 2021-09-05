@@ -100,7 +100,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                     arrayPoints.add(latLng);
                 }
 
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(endLocation, 14));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(endLocation, 15));
                 pOptions.addAll(arrayPoints);
                 mGoogleMap.addPolyline(pOptions);
             }

@@ -45,6 +45,7 @@ public class LocationService extends Service {
     private static long UPDATE_INTERNAL = 1000 * 60;
     private static long FASTEST_UPDATE_INTERNAL = 1000 * 60;
     private LocationDBManager dbManager;
+    private LocationCallback locationCallback;
 
     public LocationService() {
     }
@@ -83,6 +84,7 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand : called.");
+        locationCallback();
         getLocation();
         return START_STICKY;
     }
@@ -105,7 +107,12 @@ public class LocationService extends Service {
             return;
         }
         Log.d(TAG, "getLocation : getting location information.");
-        mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
+        mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy,
+                locationCallback, Looper.myLooper());
+    }
+
+    private void locationCallback() {
+        locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 super.onLocationResult(locationResult);
@@ -134,6 +141,17 @@ public class LocationService extends Service {
                     }
                 }
             }
-        }, Looper.myLooper());
+        };
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= 26) {
+            mFusedLocationClient.removeLocationUpdates(locationCallback);
+            stopForeground(true);
+            stopSelf();
+            Log.d(TAG, "LocationService : onDestroy() 실행");
+        }
     }
 }
