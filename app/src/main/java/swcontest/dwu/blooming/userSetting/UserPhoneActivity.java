@@ -47,14 +47,6 @@ public class UserPhoneActivity extends Fragment {
                                         @Override
                                         public void onClick(View view) {
                                             boolean check = true;
-                                            Log.d("UserPhone(onCreateView)", "onClick");
-//                Log.d("UserPhone(onCreateView)", "사용자 이름:" + bundle.getString("userName"));
-//                Log.d("UserPhone(onCreateView)", "년월일:" + bundle.getString("userYear") + "/" + bundle.getString("userMonth")+"/"+ bundle.getString("userDay"));
-//                Log.d("UserPhone(onCreateView)", "집주소:" + bundle.getString("userHome"));
-//                Log.d("UserPhone(onCreateView)", "추적 주기:" + bundle.getString("userPeriod"));
-//                Log.d("UserPhone(onCreateView)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
-//                Log.d("UserPhone(onCreateView)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
-//                Log.d("UserPhone(onCreateView)", "비상연락망:" + et_phone.getText().toString());
 
                                             if (bundle.getString("userName") == null || bundle.getString("userName").equals("")){
                                                 StartActivity.fragmentChange(0);
@@ -76,12 +68,39 @@ public class UserPhoneActivity extends Fragment {
                                             }
                                             else {
                                                 if (check) {
+                                                    Log.d("UserPhone(onClick)", "Dialog 생성");
+                                                    Log.d("UserPhone(onClick)", "사용자 이름:" + bundle.getString("userName"));
+                                                    Log.d("UserPhone(onClick)", "년월일:" + bundle.getString("userYear") + "/" + bundle.getString("userMonth")+"/"+ bundle.getString("userDay"));
+                                                    Log.d("UserPhone(onClick)", "집주소:" + bundle.getString("userHome"));
+                                                    Log.d("UserPhone(onClick)", "추적 주기:" + bundle.getString("userPeriod"));
+                                                    Log.d("UserPhone(onClick)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
+                                                    Log.d("UserPhone(onClick)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
+                                                    Log.d("UserPhone(onClick)", "비상연락망:" + et_phone.getText().toString());
+
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                                     builder.setTitle("환영합니다^^")
                                                             .setMessage("사용자 초기설정이 완료되었습니다. \n개화와 함께 하루를 만들어 가보세요!")
                                                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                                                    //DB저장
+                                                                    UserDBHelper helper = new UserDBHelper(getActivity());
+                                                                    SQLiteDatabase userDB = helper.getWritableDatabase();
+
+                                                                    ContentValues row = new ContentValues();
+                                                                    row.put("name", bundle.getString("userName"));
+                                                                    row.put("year", bundle.getInt("userYear"));
+                                                                    row.put("month", bundle.getInt("userMonth"));
+                                                                    row.put("day", bundle.getInt("userDay"));
+                                                                    row.put("address", bundle.getString("userHome"));
+                                                                    row.put("period", Integer.parseInt(bundle.getString("userPeriod")));
+                                                                    row.put("wake", bundle.getString("wake_hour") + ":" + bundle.getString("wake_minute"));
+                                                                    row.put("sleep", bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
+                                                                    row.put("phone", et_phone.getText().toString());
+
+                                                                    userDB.insert(helper.TABLE_NAME, null, row);
+                                                                    helper.close();
+
                                                                     getActivity().finish();
 //                                    Intent intent = new Intent(getContext(), MainActivity.class);
 //                                    startActivity(intent);
@@ -107,48 +126,6 @@ public class UserPhoneActivity extends Fragment {
         if(bundle != null){
             Log.d("UserPhone(onCreateView)", "frag_5에서 번들 가져옴");
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(bundle != null){
-            Log.d("UserPhone(onStop)", "사용자 번호 번들에 담음");
-            bundle.putString("userPhone", et_phone.getText().toString());
-            Log.d("UserPhone(onStop)", "보호자 번호: " + et_phone.getText().toString());
-        }
-
-        Log.d("UserPhone(onStop)", "---최종 번들값 확인---");
-        Log.d("UserPhone(onStop)", "사용자 이름:" + bundle.getString("userName"));
-        Log.d("UserPhone(onStop)", "년월일:" + bundle.getInt("userYear") + "/" + bundle.getInt("userMonth")+"/"+ bundle.getInt("userDay"));
-        Log.d("UserPhone(onStop)", "집주소:" + bundle.getString("userHome"));
-        Log.d("UserPhone(onStop)", "추적 주기:" + bundle.getString("userPeriod"));
-        Log.d("UserPhone(onStop)", "기상시간: " + bundle.getString("wake_hour") +":"+bundle.getString("wake_minute"));
-        Log.d("UserPhone(onStop)", "취침시간: " + bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
-        Log.d("UserPhone(onStop)", "비상연락망:" + et_phone.getText().toString());
-
-        //DB저장
-        UserDBHelper helper = new UserDBHelper(this.getContext());
-        SQLiteDatabase userDB = helper.getWritableDatabase();
-
-        ContentValues row = new ContentValues();
-        row.put("name", bundle.getString("userName"));
-        row.put("year", bundle.getInt("userYear"));
-        row.put("month", bundle.getInt("userMonth"));
-        row.put("day", bundle.getInt("userDay"));
-        row.put("address", bundle.getString("userHome"));
-        if(bundle.getString("userPeriod") != null){
-            row.put("period", Integer.parseInt(bundle.getString("userPeriod")));
-        } else{
-            row.put("period", 50);
-        }
-        row.put("wake", bundle.getString("wake_hour") + ":" + bundle.getString("wake_minute"));
-        row.put("sleep", bundle.getString("sleep_hour") +":"+bundle.getString("sleep_minute"));
-        row.put("phone", et_phone.getText().toString());
-
-        userDB.insert(helper.TABLE_NAME, null, row);
-        helper.close();
-
     }
 
 }
