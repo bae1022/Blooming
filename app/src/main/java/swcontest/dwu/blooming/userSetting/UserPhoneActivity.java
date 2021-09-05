@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +37,7 @@ public class UserPhoneActivity extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.setting_phone, container, false);
 
         et_phone = rootView.findViewById(R.id.et_phone);
-
+        et_phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 //        //Bundle가져오기
 //        UserNameActivity frag_5 = new UserNameActivity();
 //        bundle = frag_5.bundle;

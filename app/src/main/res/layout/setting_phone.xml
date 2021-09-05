@@ -50,7 +50,6 @@
         android:layout_marginTop="44dp"
         android:backgroundTint="@color/blue5"
         android:ems="10"
-        android:hint="01012345678"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
