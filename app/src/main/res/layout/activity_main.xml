@@ -83,18 +83,6 @@
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/btn_setting"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:onClick="onClick"
-        android:text="초기화면"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
     <ImageView
         android:id="@+id/iv_siren"
         android:layout_width="66dp"
