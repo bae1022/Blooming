@@ -1,7 +1,5 @@
 package swcontest.dwu.blooming.service;
 
-
-
 import android.os.Handler;
 
 import static swcontest.dwu.blooming.MainActivity.period;

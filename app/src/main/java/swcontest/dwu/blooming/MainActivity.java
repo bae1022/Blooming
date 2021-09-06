@@ -322,10 +322,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, UserUpdateActivity.class);
                 startActivity(intent);
                 finish();
-
-//                Intent location_intent = new Intent(MainActivity.this, LocationService.class);
-//                stopService(location_intent);
-//                Log.d("LoactionService", "Location Service 멈춤..");
                 break;
             case R.id.btn_alarm_setting:
                 Intent intent2 = new Intent(MainActivity.this, AlarmSettingActivity.class);
