@@ -1,21 +1,21 @@
 package swcontest.dwu.blooming.service;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -32,6 +32,8 @@ import com.google.android.gms.location.LocationServices;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import swcontest.dwu.blooming.MainActivity;
+import swcontest.dwu.blooming.R;
 import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 
@@ -46,6 +48,8 @@ public class LocationService extends Service {
     private static long FASTEST_UPDATE_INTERNAL = 1000 * 60;
     private LocationDBManager dbManager;
     private LocationCallback locationCallback;
+    NotificationManager Notifi_M;
+    LocationServiceThread thread;
 
     public LocationService() {
     }
@@ -64,28 +68,17 @@ public class LocationService extends Service {
 
         dbManager = new LocationDBManager(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        if (Build.VERSION.SDK_INT >= 26) {
-            String CHANNEL_ID = "my_location_channel";
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "My Location Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("")
-                    .setContentText("").build();
-
-            startForeground(1, notification);
-        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand : called.");
-        locationCallback();
-        getLocation();
+
+        Notifi_M = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        serviceHandler handler = new serviceHandler();
+        thread = new LocationServiceThread(handler);
+        thread.start();
+
         return START_STICKY;
     }
 
@@ -144,14 +137,50 @@ public class LocationService extends Service {
         };
     }
 
+    // 포그라운드 서비스
+    public void initializeNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1");
+        builder.setSmallIcon(R.drawable.ic_location);
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+        style.bigText("설정을 보려면 누르세요.");
+        style.setBigContentTitle(null);
+        style.setSummaryText("서비스 동작 중");
+        builder.setContentText(null);
+        builder.setContentTitle(null);
+        builder.setOngoing(true);
+        builder.setStyle(style);
+        builder.setWhen(0);
+        builder.setShowWhen(false);
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        builder.setContentIntent(pendingIntent);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(new NotificationChannel("1", "포그라운드 서비스", NotificationManager.IMPORTANCE_NONE));
+        }
+        Notification notification = builder.build();
+        startForeground(1, notification);
+    }
+
+    class serviceHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+            initializeNotification();
+            locationCallback();
+            getLocation();
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (Build.VERSION.SDK_INT >= 26) {
-            mFusedLocationClient.removeLocationUpdates(locationCallback);
-            stopForeground(true);
-            stopSelf();
-            Log.d(TAG, "LocationService : onDestroy() 실행");
-        }
+        thread.stopForever();
+        thread = null; // 쓰레기 값 만들어서 빠르게 회수하라고 null 값을 넣어줌.
+        mFusedLocationClient.removeLocationUpdates(locationCallback);
+        stopForeground(true);
+        Log.d(TAG, "LocationService : onDestroy() 실행");
     }
 }

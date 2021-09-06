@@ -80,10 +80,12 @@ public class LocationListActivity extends AppCompatActivity {
             case R.id.btnCurrentLocation :
                 Intent intent = new Intent(this, LocationActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btnMainGo :
                 Intent hintent = new Intent(this, MainActivity.class);
                 startActivity(hintent);
+                finish();
                 break;
         }
     }

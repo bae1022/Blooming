@@ -65,6 +65,7 @@ public class LocationDetailActivity extends AppCompatActivity {
             case R.id.btn_memo_home :
                 Intent intent = new Intent(LocationDetailActivity.this, LocationListActivity.class);
                 startActivity(intent);
+                finish();
                 break;
         }
     }

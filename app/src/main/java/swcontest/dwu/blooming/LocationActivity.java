@@ -3,6 +3,7 @@ package swcontest.dwu.blooming;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import java.util.Date;
 import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 import swcontest.dwu.blooming.service.FetchAddressIntentService;
+import swcontest.dwu.blooming.service.LocationService;
 
 import static swcontest.dwu.blooming.MainActivity.period;
 
@@ -42,6 +44,7 @@ public class LocationActivity extends AppCompatActivity {
     private AddressResultReceiver addressResultReceiver;
     double latitude, longitude;
     boolean sw = true;
+    String class_name = LocationService.class.getName();
 
     private MapFragment mapFragment;
     private GoogleMap mGoogleMap;
@@ -75,8 +78,12 @@ public class LocationActivity extends AppCompatActivity {
         list = new ArrayList<LocationDto>();
         arrayPoints = new ArrayList<LatLng>();
 
-        sw = true;
-        updateMap();
+        if (isServiceRunning(class_name)) {
+            sw = true;
+            updateMap();
+        } else {
+            sw = false;
+        }
     }
 
     public void onClick(View v) {
@@ -84,11 +91,13 @@ public class LocationActivity extends AppCompatActivity {
             case R.id.btnLocationMemo :
                 Intent intent = new Intent(LocationActivity.this, LocationListActivity.class);
                 startActivity(intent);
+                finish();
                 break;
 
             case R.id.btnHome :
                 Intent hIntent = new Intent(LocationActivity.this, MainActivity.class);
                 startActivity(hIntent);
+                finish();
                 break;
         }
     }
@@ -197,15 +206,26 @@ public class LocationActivity extends AppCompatActivity {
         t.start();
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        sw = false;
-//
-//        if (sw == true) {
-//            Log.d(TAG, "updateMap() is running.");
-//        } else {
-//            Log.d(TAG, "updateMap() is stopped.");
-//        }
-//        super.onDestroy();
-//    }
+    // 서비스 실행 유무 확인
+    public boolean isServiceRunning(String class_name) {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (class_name.equals(service.service.getClassName())) {
+                Log.d("LocationService", "현재 실행중인 서비스는 " + service.service.getClassName());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        sw = false;
+        if (mHandler != null) {
+            mHandler.removeMessages(0);
+            Log.d(TAG, "updateMap() is stopped.");
+        }
+        super.onDestroy();
+        Log.d(TAG, "LocationActivity : onDestroy() 실행");
+    }
 }
