@@ -93,11 +93,14 @@ public class MyGridAdapter extends ArrayAdapter {
         }
         //오늘 day 가져옴
         Calendar mCal = Calendar.getInstance();
-        Integer today = mCal.get(Calendar.DAY_OF_MONTH);
+        int today = mCal.get(Calendar.DAY_OF_MONTH);
+        int month = mCal.get(Calendar.MONTH) +1;
+        int year = mCal.get(Calendar.YEAR);
 
+        Log.d("today", today + "일 " + month + "월" + year + "년");
         //오늘날짜 표시
-        int yoil = dates.get(position).getDate();
-        if(displayMonth == currentMonth && displayYear == currentYear && yoil == today){
+
+        if(month == currentMonth && year == currentYear && today == DayNo){
             Day_Number.setTextColor(mContext.getResources().getColor(R.color.colorToday));
         }
         Day_Number.setVisibility(View.VISIBLE);
