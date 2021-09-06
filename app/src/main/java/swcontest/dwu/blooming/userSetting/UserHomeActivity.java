@@ -23,17 +23,27 @@ public class UserHomeActivity extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.setting_home, container, false);
         et_home = rootView.findViewById(R.id.et_home);
         //Bundle 가져오기
-        UserNameActivity frag_3 = new UserNameActivity();
-        bundle = frag_3.bundle;
-        if(bundle != null)
-            Log.d("UserHome(onCreate)", "번들있음");
+//        UserNameActivity frag_3 = new UserNameActivity();
+//        bundle = frag_3.bundle;
+//        if(bundle != null)
+//            Log.d("UserHome(onCreate)", "번들있음");
 
         return rootView;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+
+        UserNameActivity frag_3 = new UserNameActivity();
+        bundle = frag_3.bundle;
+        if(bundle != null)
+            Log.d("UserHome(onCreate)", "번들있음");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         if(bundle != null){
             Log.d("UserHome(onStop)", "집 주소 번들에 담기");
             bundle.putString("userHome", et_home.getText().toString());

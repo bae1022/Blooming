@@ -23,6 +23,8 @@ public class UserBirthActivity extends Fragment {
     DatePicker dp_birth;
     Bundle bundle;
 
+    DatePicker dp;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -33,23 +35,39 @@ public class UserBirthActivity extends Fragment {
         mYear = calendar.get(Calendar.YEAR);
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        DatePicker dp = rootView.findViewById(R.id.datePicker);
+        dp = rootView.findViewById(R.id.datePicker);
         dp.init(mYear, mMonth, mDay, mOnDateChangedListener);
 
         dp_birth = rootView.findViewById(R.id.datePicker);
 
         // Frag_1의 Bundel을 갖고오기
-        UserNameActivity frag_1 = new UserNameActivity();
-        bundle = frag_1.bundle;
-        if(bundle != null)
-            Log.d("UserBirth(onCreateView)", "번들 존재");
+//        UserNameActivity frag_1 = new UserNameActivity();
+//        bundle = frag_1.bundle;
+//        if(bundle != null)
+//            Log.d("UserBirth(onCreateView)", "번들 존재");
 
         return rootView;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+
+        UserNameActivity frag_1 = new UserNameActivity();
+        bundle = frag_1.bundle;
+        if(bundle != null)
+            Log.d("UserBirth(onCreateView)", "번들 존재");
+
+        Calendar calendar = new GregorianCalendar();
+        mYear = calendar.get(Calendar.YEAR);
+        mMonth = calendar.get(Calendar.MONTH);
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        dp.init(mYear, mMonth, mDay, mOnDateChangedListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         if(bundle != null){
             Log.d("UserBirth(onStop)", "날짜 값 번들에 담기");
             bundle.putInt("userYear", dp_birth.getYear());

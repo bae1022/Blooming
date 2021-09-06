@@ -12,6 +12,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +32,7 @@ import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 import swcontest.dwu.blooming.service.FetchAddressIntentService;
 
-import static swcontest.dwu.blooming.userSetting.StartActivity.location_period;
+import static swcontest.dwu.blooming.MainActivity.period;
 
 public class LocationActivity extends AppCompatActivity {
 
@@ -40,6 +41,7 @@ public class LocationActivity extends AppCompatActivity {
     private static Handler mHandler;
     private AddressResultReceiver addressResultReceiver;
     double latitude, longitude;
+    boolean sw = true;
 
     private MapFragment mapFragment;
     private GoogleMap mGoogleMap;
@@ -47,7 +49,7 @@ public class LocationActivity extends AppCompatActivity {
     private PolylineOptions pOptions;
     private ArrayList<LatLng> arrayPoints = null;
 
-    TextView tvAddress, tvGuide2;
+    TextView tvAddress, tvGuide;
     LocationDBManager dbManager;
     ArrayList<LocationDto> list = null;
 
@@ -59,20 +61,21 @@ public class LocationActivity extends AppCompatActivity {
         addressResultReceiver = new AddressResultReceiver(new Handler());
         tvAddress = findViewById(R.id.tvAddress);
 
-        tvGuide2 = findViewById(R.id.tvGuide2);
-        tvGuide2.setText("(현재 위치와 경로는 " + location_period + "분마다 갱신됩니다.)");
+        tvGuide = findViewById(R.id.tvGuide);
+        tvGuide.setText("(현재 위치와 경로는 약 " + period + "분마다 갱신됩니다.)");
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallBack);
 
         pOptions = new PolylineOptions();
-        pOptions.color(Color.RED);
+        pOptions.color(Color.rgb(255, 102, 0));
         pOptions.width(5);
 
         dbManager = new LocationDBManager(this);
         list = new ArrayList<LocationDto>();
         arrayPoints = new ArrayList<LatLng>();
 
+        sw = true;
         updateMap();
     }
 
@@ -111,13 +114,14 @@ public class LocationActivity extends AppCompatActivity {
                 LatLng location = new LatLng(latitude, longitude);
                 Log.v(TAG, "위도 : " + latitude + ", 경도 : " + longitude);
 
+                startAddressService();
+
                 MarkerOptions options = new MarkerOptions();
                 options.position(location);
                 options.title("현재 위치");
-                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
                 centerMarker = mGoogleMap.addMarker(options);
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
                 centerMarker.showInfoWindow();
 
                 for (int i = 0; i < list.size(); i++) {
@@ -126,14 +130,10 @@ public class LocationActivity extends AppCompatActivity {
                 }
                 pOptions.addAll(arrayPoints);
                 mGoogleMap.addPolyline(pOptions);
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
+            } else {
+                Toast.makeText(getApplicationContext(), "위치 추적을 활성화 해주세요.", Toast.LENGTH_LONG).show();
             }
-
-            mGoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(@NonNull Marker marker) {
-                    startAddressService();
-                }
-            });
         }
     };
 
@@ -181,9 +181,9 @@ public class LocationActivity extends AppCompatActivity {
         class NewRunnable implements Runnable {
             @Override
             public void run() {
-                while (true) {
+                while (sw) {
                     try {
-                        Thread.sleep(1000 * 60);
+                        Thread.sleep(1000 * 60 * 2);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -196,4 +196,16 @@ public class LocationActivity extends AppCompatActivity {
         Thread t = new Thread(nr);
         t.start();
     }
+
+//    @Override
+//    protected void onDestroy() {
+//        sw = false;
+//
+//        if (sw == true) {
+//            Log.d(TAG, "updateMap() is running.");
+//        } else {
+//            Log.d(TAG, "updateMap() is stopped.");
+//        }
+//        super.onDestroy();
+//    }
 }

@@ -35,7 +35,7 @@
                 android:id="@+id/map"
                 android:name="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="620dp"
+                android:layout_height="630dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
@@ -52,26 +52,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:text="현재 주소"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
-
-            <TextView
-                android:id="@+id/tvGuide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="※ 지도의 [현재 위치]를 누르시면 주소를 알 수 있습니다."
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/map" />
 
             <TextView
                 android:id="@+id/tvAddress"
@@ -81,7 +66,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="12dp"
                 android:textColor="#000000"
-                android:textSize="14sp"
+                android:textSize="17sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/tvCurrent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
 
@@ -124,15 +110,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvGuide2"
+                android:id="@+id/tvGuide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
-                android:text=" (현재 위치는 실시간으로 갱신되며, 경로는 3분마다 갱신됩니다.)"
+                android:text="※ 현재 위치와 경로는 5분마다 갱신됩니다."
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvGuide" />
+                app:layout_constraintTop_toBottomOf="@+id/map" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

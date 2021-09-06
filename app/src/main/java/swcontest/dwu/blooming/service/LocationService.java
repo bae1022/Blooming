@@ -1,6 +1,7 @@
 package swcontest.dwu.blooming.service;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
@@ -32,18 +35,17 @@ import java.util.Date;
 import swcontest.dwu.blooming.db.LocationDBManager;
 import swcontest.dwu.blooming.dto.LocationDto;
 
-import static swcontest.dwu.blooming.userSetting.StartActivity.location_period;
+import static swcontest.dwu.blooming.MainActivity.period;
 
 public class LocationService extends Service {
 
     public static final String TAG = "LocationService";
 
     private FusedLocationProviderClient mFusedLocationClient;
-    int period;
     private static long UPDATE_INTERNAL = 1000 * 60;
     private static long FASTEST_UPDATE_INTERNAL = 1000 * 60;
     private LocationDBManager dbManager;
-
+    private LocationCallback locationCallback;
 
     public LocationService() {
     }
@@ -60,7 +62,6 @@ public class LocationService extends Service {
         super.onCreate();
         Log.d(TAG, "LocationService service created");
 
-        period = location_period;
         dbManager = new LocationDBManager(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -83,13 +84,16 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand : called.");
+        locationCallback();
         getLocation();
         return START_STICKY;
     }
 
     private void getLocation() {
-        UPDATE_INTERNAL = 1000 * 60 * period;
-        FASTEST_UPDATE_INTERNAL = 1000 * 60 * period;
+        int location_period = period;
+
+        UPDATE_INTERNAL = 1000 * 60 * location_period;
+        FASTEST_UPDATE_INTERNAL = 1000 * 60 * location_period;
 
         LocationRequest mLocationRequestHighAccuracy = new LocationRequest();
         mLocationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -103,7 +107,12 @@ public class LocationService extends Service {
             return;
         }
         Log.d(TAG, "getLocation : getting location information.");
-        mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
+        mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy,
+                locationCallback, Looper.myLooper());
+    }
+
+    private void locationCallback() {
+        locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 super.onLocationResult(locationResult);
@@ -125,15 +134,24 @@ public class LocationService extends Service {
 
                     boolean result = dbManager.addLocation(new LocationDto(getDay, getTime, location.getLatitude(), location.getLongitude()));
                     if (result) {
+                        Log.d(TAG, "현재 위치의 위도 : " + location.getLatitude() + ", 경도 : " + location.getLongitude());
                         Log.d(TAG, "저장 성공!!!");
                     } else {
                         Log.d(TAG, "저장 실패...");
                     }
                 }
             }
-        }, Looper.myLooper());
+        };
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= 26) {
+            mFusedLocationClient.removeLocationUpdates(locationCallback);
+            stopForeground(true);
+            stopSelf();
+            Log.d(TAG, "LocationService : onDestroy() 실행");
+        }
+    }
 }
