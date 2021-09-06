@@ -2,6 +2,7 @@ package swcontest.dwu.blooming.userSetting;
 
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -67,6 +68,8 @@ public class UserUpdateActivity extends AppCompatActivity{
     public void onClick(View v){
         switch (v.getId()){
             case R.id.btn_ok:
+                Intent intent = new Intent(UserUpdateActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
                 break;
             case R.id.btn_update:
@@ -95,6 +98,8 @@ public class UserUpdateActivity extends AppCompatActivity{
                 } else{
                     Toast.makeText(this.getApplicationContext(), "제대로 입력했는지 확인해주세요", Toast.LENGTH_SHORT).show();
                 }
+                Intent nintent = new Intent(UserUpdateActivity.this, MainActivity.class);
+                startActivity(nintent);
                 finish();
                 break;
         }
