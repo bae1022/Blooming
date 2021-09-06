@@ -321,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_setting:
                 Intent intent = new Intent(MainActivity.this, UserUpdateActivity.class);
                 startActivity(intent);
+                finish();
 
 //                Intent location_intent = new Intent(MainActivity.this, LocationService.class);
 //                stopService(location_intent);
