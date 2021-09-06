@@ -40,10 +40,10 @@ public class LocationActivity extends AppCompatActivity {
 
     public static final String TAG = "LocationActivity";
 
-    private static Handler mHandler;
+    LocationActivityThread thread;
+    handler mHandler;
     private AddressResultReceiver addressResultReceiver;
     double latitude, longitude;
-    boolean sw = true;
     String class_name = LocationService.class.getName();
 
     private MapFragment mapFragment;
@@ -65,7 +65,6 @@ public class LocationActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress);
 
         tvGuide = findViewById(R.id.tvGuide);
-        tvGuide.setText("(현재 위치와 경로는 약 " + period + "분마다 갱신됩니다.)");
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallBack);
@@ -79,10 +78,13 @@ public class LocationActivity extends AppCompatActivity {
         arrayPoints = new ArrayList<LatLng>();
 
         if (isServiceRunning(class_name)) {
-            sw = true;
-            updateMap();
+            tvGuide.setText("※ 현재 위치와 경로는 약 " + period + "분마다 갱신됩니다.");
+
+            mHandler = new handler();
+            thread = new LocationActivityThread(mHandler);
+            thread.start();
         } else {
-            sw = false;
+            tvGuide.setText("※ 위치 추적을 활성화 해주세요.");
         }
     }
 
@@ -141,7 +143,9 @@ public class LocationActivity extends AppCompatActivity {
                 mGoogleMap.addPolyline(pOptions);
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
             } else {
-                Toast.makeText(getApplicationContext(), "위치 추적을 활성화 해주세요.", Toast.LENGTH_LONG).show();
+                if (!isServiceRunning(class_name)) {
+                    Toast.makeText(getApplicationContext(), "위치 추적을 활성화 해주세요.", Toast.LENGTH_LONG).show();
+                }
             }
         }
     };
@@ -176,36 +180,6 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
-    public void updateMap() {
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                mGoogleMap.clear();
-                Log.d("Location", "mapReadyCallBack");
-                mapFragment.getMapAsync(mapReadyCallBack);
-            }
-        };
-
-        class NewRunnable implements Runnable {
-            @Override
-            public void run() {
-                while (sw) {
-                    try {
-                        Thread.sleep(1000 * 60 * 2);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    mHandler.sendEmptyMessage(0);
-                }
-            }
-        }
-
-        NewRunnable nr = new NewRunnable();
-        Thread t = new Thread(nr);
-        t.start();
-    }
-
     // 서비스 실행 유무 확인
     public boolean isServiceRunning(String class_name) {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -218,13 +192,23 @@ public class LocationActivity extends AppCompatActivity {
         return false;
     }
 
+    class handler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            mGoogleMap.clear();
+            Log.d("Location", "mapReadyCallBack");
+            mapFragment.getMapAsync(mapReadyCallBack);
+        }
+    }
+
     @Override
     protected void onDestroy() {
-        sw = false;
         if (mHandler != null) {
-            mHandler.removeMessages(0);
-            Log.d(TAG, "updateMap() is stopped.");
+            thread.stopForever();
+            thread = null; // 쓰레기 값 만들어서 빠르게 회수하라고 null 값을 넣어줌.
         }
+
         super.onDestroy();
         Log.d(TAG, "LocationActivity : onDestroy() 실행");
     }

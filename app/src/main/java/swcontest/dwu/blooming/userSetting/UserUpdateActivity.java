@@ -1,5 +1,6 @@
 package swcontest.dwu.blooming.userSetting;
 
+import android.app.ActivityManager;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import swcontest.dwu.blooming.MainActivity;
 import swcontest.dwu.blooming.R;
 import swcontest.dwu.blooming.db.UserDBHelper;
+import swcontest.dwu.blooming.service.LocationService;
 
 public class UserUpdateActivity extends AppCompatActivity{
 
@@ -30,6 +32,8 @@ public class UserUpdateActivity extends AppCompatActivity{
 
     EditText db_name, db_year, db_month, db_day;
     EditText db_address, db_period, db_wake, db_sleep, db_phone;
+
+    String class_name = LocationService.class.getName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +102,13 @@ public class UserUpdateActivity extends AppCompatActivity{
                 } else{
                     Toast.makeText(this.getApplicationContext(), "제대로 입력했는지 확인해주세요", Toast.LENGTH_SHORT).show();
                 }
+
+                if (isServiceRunning(class_name)) {
+                    Intent location_intent = new Intent(UserUpdateActivity.this, LocationService.class);
+                    stopService(location_intent);
+                    Log.d("LoactionService", "Location Service 멈춤..");
+                }
+
                 Intent nintent = new Intent(UserUpdateActivity.this, MainActivity.class);
                 startActivity(nintent);
                 finish();
@@ -105,5 +116,16 @@ public class UserUpdateActivity extends AppCompatActivity{
         }
     }
 
+    // 서비스 실행 유무 확인
+    public boolean isServiceRunning(String class_name) {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (class_name.equals(service.service.getClassName())) {
+                Log.d("LocationService", "현재 실행중인 서비스는 " + service.service.getClassName());
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

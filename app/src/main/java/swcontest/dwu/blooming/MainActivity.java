@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         checkDangerousPermissions();
 
         aSwitch = findViewById(R.id.locationServiceSwitch);
+        getPeriod();
         appData = getSharedPreferences("appData", MODE_PRIVATE); // 설정값 불러오기
         load();
         if (switchData) { // 이전에 스위치를 사용했다면
@@ -99,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         aSwitch.setOnCheckedChangeListener(new switchListener());
 
         if (aSwitch.isChecked() == true) {
-            getPeriod();
             Log.d("LoactionService", "switch 버튼이 켜져 있음.");
             if (!isServiceRunning(class_name)) {
                 Log.d("LoactionService", "Location Service 시작");
@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 save();
+                getPeriod();
                 Log.d("LoactionService", "스위치 버튼 꺼짐..");
                 if (location_intent != null) {
                     stopService(location_intent);
@@ -329,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // 추적 주기를 받아옴
     public void getPeriod() {
         UserDBHelper helper = new UserDBHelper(getApplicationContext());
         SQLiteDatabase userDB = helper.getReadableDatabase();
