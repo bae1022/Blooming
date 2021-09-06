@@ -63,7 +63,7 @@ public class DailyMemoService extends Service {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 CharSequence name = getString(R.string.channel_name);       // strings.xml 에 채널명 기록
                 String description = getString(R.string.channel_description);       // strings.xml에 채널 설명 기록
-                int importance = NotificationManager.IMPORTANCE_DEFAULT;    // 알림의 우선순위 지정
+                int importance = NotificationManager.IMPORTANCE_HIGH;    // 알림의 우선순위 지정
                 NotificationChannel channel = new NotificationChannel(getString(R.string.CHANNEL_ID), name, importance);    // CHANNEL_ID 지정
                 channel.setDescription(description);
                 // Register the channel with the system; you can't change the importance
@@ -84,8 +84,9 @@ public class DailyMemoService extends Service {
 //                    .setStyle(new NotificationCompat.BigTextStyle()
 //                            .bigText("기본적인 알림의 메시지 보다 더 많은 양의 내용을 알림에 표시하고자 할 때 메시지가 잘리지 않도록 함."))
                     .setContentIntent(pendingIntent)
+//                    .setFullScreenIntent(pendingIntent, true)
+                    .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//                    .setAutoCancel(true);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
