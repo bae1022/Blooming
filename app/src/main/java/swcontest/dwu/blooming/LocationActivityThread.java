@@ -20,7 +20,7 @@ public class LocationActivityThread extends Thread  {
         while (isRun) {
             handler.sendEmptyMessage(0);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000 * 60 * 1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
