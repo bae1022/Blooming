@@ -102,7 +102,7 @@ public class DailyMemoService extends Service {
             notificationManager.notify(notificationId, builder.build());
 
             //토스트 띄우기
-            Toast.makeText(DailyMemoService.this, "작동 ok", Toast.LENGTH_LONG).show();
+//            Toast.makeText(DailyMemoService.this, "작동 ok", Toast.LENGTH_LONG).show();
 
         }
     }

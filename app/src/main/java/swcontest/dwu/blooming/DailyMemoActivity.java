@@ -74,7 +74,7 @@ public class DailyMemoActivity extends AppCompatActivity {
 
             case R.id.daily_memo_cancel: //메인화면으로 이동
 
-                Intent intent2 = new Intent(this, DailyMemoListActivity.class);
+                Intent intent2 = new Intent(this, MainActivity.class);
                 startActivity(intent2);
                 break;
         }
