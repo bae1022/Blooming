@@ -97,7 +97,7 @@ public class MyGridAdapter extends ArrayAdapter {
 
         //오늘날짜 표시
         int yoil = dates.get(position).getDate();
-        if(displayMonth == currentMonth && displayYear == currentYear&&yoil == today){
+        if(displayMonth == currentMonth && displayYear == currentYear && yoil == today){
             Day_Number.setTextColor(mContext.getResources().getColor(R.color.colorToday));
         }
         Day_Number.setVisibility(View.VISIBLE);

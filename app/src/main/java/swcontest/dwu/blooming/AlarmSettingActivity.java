@@ -66,17 +66,17 @@ public class AlarmSettingActivity extends AppCompatActivity implements TimePicke
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
         Log.d(TAG, "ONTIMESET");
 
-        getUserWakeSleep();
+        //getUserWakeSleep();
 
 
         Calendar c = Calendar.getInstance();
 
-//        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
-//        c.set(Calendar.MINUTE, minute);
-//        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour_sleep));
-        c.set(Calendar.MINUTE, Integer.parseInt(minute_sleep));
+        c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        c.set(Calendar.MINUTE, minute);
         c.set(Calendar.SECOND, 0);
+//        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour_sleep));
+//        c.set(Calendar.MINUTE, Integer.parseInt(minute_sleep));
+//        c.set(Calendar.SECOND, 0);
 
         //화면에 시간지정
         updateTimeText(c);
@@ -115,32 +115,32 @@ public class AlarmSettingActivity extends AppCompatActivity implements TimePicke
     }
 
     // 유저의 기상시간과 수면시간을 받아옴
-    public void getUserWakeSleep() {
-
-        ArrayList<String> userInfo = new ArrayList<String>();
-
-        UserDBHelper helper = new UserDBHelper(this);
-        SQLiteDatabase userDB = helper.getReadableDatabase();
-        Cursor cursor = userDB.rawQuery("SELECT sleep FROM " + helper.TABLE_NAME + ";", null);
-
-        while(cursor.moveToNext()) {
-            String sleep = cursor.getString(1);
-
-            Log.d("확인하자2", "취침시간: " + sleep);
-            userInfo.add(sleep);
-        }
-
-        cursor.close();
-        helper.close();
-
-        String sleep = userInfo.get(userInfo.size() - 1);
-
-        Log.d("확인하자", "취침시간: " + sleep);
-
-        int index2 = sleep.indexOf(":");
-
-
-        minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
-        hour_sleep = sleep.substring(0, index2);
-    }
+//    public void getUserWakeSleep() {
+//
+//        ArrayList<String> userInfo = new ArrayList<String>();
+//
+//        UserDBHelper helper = new UserDBHelper(this);
+//        SQLiteDatabase userDB = helper.getReadableDatabase();
+//        Cursor cursor = userDB.rawQuery("SELECT sleep FROM " + helper.TABLE_NAME + ";", null);
+//
+//        while(cursor.moveToNext()) {
+//            String sleep = cursor.getString(1);
+//
+//            Log.d("확인하자2", "취침시간: " + sleep);
+//            userInfo.add(sleep);
+//        }
+//
+//        cursor.close();
+//        helper.close();
+//
+//        String sleep = userInfo.get(userInfo.size() - 1);
+//
+//        Log.d("확인하자", "취침시간: " + sleep);
+//
+//        int index2 = sleep.indexOf(":");
+//
+//
+//        minute_sleep = sleep.substring(sleep.length() - 2, sleep.length());
+//        hour_sleep = sleep.substring(0, index2);
+//    }
 }
