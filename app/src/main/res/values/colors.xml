@@ -16,5 +16,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#ff9600</color>
+    <color name="colorToday">#ff9605</color>
 <!--    <color name="blank">#000000</color>-->
 </resources>

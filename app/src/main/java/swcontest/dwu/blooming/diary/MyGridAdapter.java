@@ -30,6 +30,7 @@ public class MyGridAdapter extends ArrayAdapter {
     Calendar currentDate;
     List<Events> events;
     LayoutInflater inflater;
+    Context mContext;
 
     public MyGridAdapter(@NonNull Context context, List<Date> dates, Calendar currentDate, List<Events> events ) {
         super(context, R.layout.single_cell_layout);
@@ -37,6 +38,7 @@ public class MyGridAdapter extends ArrayAdapter {
         this.currentDate = currentDate;
         this.events = events;
         inflater = LayoutInflater.from(context);
+        mContext = context;
 
     }
 
@@ -49,22 +51,6 @@ public class MyGridAdapter extends ArrayAdapter {
         Calendar dateCalendar = Calendar.getInstance();
         dateCalendar.setTime(monthDate);
 
-        //오늘날짜 구하기
-        Date currentTime = Calendar.getInstance().getTime();
-        SimpleDateFormat weekdayFormat = new SimpleDateFormat("EE", Locale.getDefault());
-        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
-
-        String weekDay = weekdayFormat.format(currentTime);
-        String year = yearFormat.format(currentTime);
-        String month = monthFormat.format(currentTime);
-        String day = dayFormat.format(currentTime);
-
-        //
-
-        Log.d("webnautes", year + "년 " + month + "월 " +
-                day + "일 " + weekDay + "요일");
 
         int DayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
         int displayMonth = dateCalendar.get(Calendar.MONTH) +1;
@@ -72,7 +58,6 @@ public class MyGridAdapter extends ArrayAdapter {
 
         int currentMonth = currentDate.get(Calendar.MONTH)+1;
         int currentYear = currentDate.get(Calendar.YEAR);
-
 
         View view = convertView;
         if(view == null){
@@ -89,15 +74,11 @@ public class MyGridAdapter extends ArrayAdapter {
 
         TextView Day_Number = view.findViewById(R.id.calendar_day);
         TextView EventNumber = view.findViewById(R.id.events_id);
-        //Log.d("Day_Number", Day_Number.setText(););
+        //Log.d("Day_Number",));
 
         Day_Number.setText(String.valueOf(DayNo));
-        //Day_Number.setTextColor(R.color.colorPrimaryDark);
         Calendar eventCalendar = Calendar.getInstance();
 
-//        if(day == dayFormat.format(Day_Number)){
-//            Day_Number.setTextColor(R.color.purple_200);
-//        }
         //일기 표시
         ArrayList<String> arrayList = new ArrayList<>();
         for(int i = 0; i < events.size(); i++){
@@ -110,6 +91,16 @@ public class MyGridAdapter extends ArrayAdapter {
 
             }
         }
+        //오늘 day 가져옴
+        Calendar mCal = Calendar.getInstance();
+        Integer today = mCal.get(Calendar.DAY_OF_MONTH);
+
+        //오늘날짜 표시
+        int yoil = dates.get(position).getDate();
+        if(displayMonth == currentMonth && displayYear == currentYear&&yoil == today){
+            Day_Number.setTextColor(mContext.getResources().getColor(R.color.colorToday));
+        }
+        Day_Number.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -140,4 +131,5 @@ public class MyGridAdapter extends ArrayAdapter {
     public Object getItem(int position) {
         return dates.get(position);
     }
+
 }
