@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     String tel;
     String class_name = LocationService.class.getName();
     Switch aSwitch;
-    int mPeriod = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,32 +86,31 @@ public class MainActivity extends AppCompatActivity {
             if (!isGPSEnabled()) {
                 buildAlertMessageNoGps();
             }
-
-            aSwitch = findViewById(R.id.locationServiceSwitch);
-            appData = getSharedPreferences("appData", MODE_PRIVATE); // 설정값 불러오기
-            load();
-            if (switchData) { // 이전에 스위치를 사용했다면
-                aSwitch.setChecked(switchData);
-            }
-            aSwitch.setOnCheckedChangeListener(new switchListener());
-
-            if (aSwitch.isChecked() == true) {
-                mPeriod = period;
-                getPeriod();
-                Log.d("LoactionService", "switch 버튼이 켜져 있음.");
-                if (!isServiceRunning(class_name) || mPeriod != period) {
-                    Log.d("LoactionService", "Location Service 시작");
-                    Intent Lintent = new Intent(MainActivity.this, LocationService.class);
-                    startService(Lintent);
-                } else {
-                    Log.d("LoactionService", "Location Service는 이미 실행중..");
-                }
-            } else {
-                Log.d("LoactionService", "switch 버튼이 꺼져 있음.");
-            }
         }
 
         checkDangerousPermissions();
+
+        aSwitch = findViewById(R.id.locationServiceSwitch);
+        appData = getSharedPreferences("appData", MODE_PRIVATE); // 설정값 불러오기
+        load();
+        if (switchData) { // 이전에 스위치를 사용했다면
+            aSwitch.setChecked(switchData);
+        }
+        aSwitch.setOnCheckedChangeListener(new switchListener());
+
+        if (aSwitch.isChecked() == true) {
+            getPeriod();
+            Log.d("LoactionService", "switch 버튼이 켜져 있음.");
+            if (!isServiceRunning(class_name)) {
+                Log.d("LoactionService", "Location Service 시작");
+                Intent Lintent = new Intent(MainActivity.this, LocationService.class);
+                startService(Lintent);
+            } else {
+                Log.d("LoactionService", "Location Service는 이미 실행중..");
+            }
+        } else {
+            Log.d("LoactionService", "switch 버튼이 꺼져 있음.");
+        }
 
         //보호자 전화 연동
         ImageView iv_siren = findViewById(R.id.iv_siren);
