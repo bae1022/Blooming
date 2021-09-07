@@ -83,10 +83,8 @@ public class LocationService extends Service {
     }
 
     private void getLocation() {
-        int location_period = period;
-
-        UPDATE_INTERNAL = 1000 * 60 * location_period;
-        FASTEST_UPDATE_INTERNAL = 1000 * 60 * location_period;
+        UPDATE_INTERNAL = 1000 * 60 * period;
+        FASTEST_UPDATE_INTERNAL = 1000 * 60 * period;
 
         LocationRequest mLocationRequestHighAccuracy = new LocationRequest();
         mLocationRequestHighAccuracy.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -144,7 +142,7 @@ public class LocationService extends Service {
         NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
         style.bigText("설정을 보려면 누르세요.");
         style.setBigContentTitle(null);
-        style.setSummaryText("서비스 동작 중");
+        style.setSummaryText("GPS(위치) 서비스 동작 중");
         builder.setContentText(null);
         builder.setContentTitle(null);
         builder.setOngoing(true);

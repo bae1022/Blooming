@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     String tel;
     String class_name = LocationService.class.getName();
     Switch aSwitch;
-    int mPeriod = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,32 +86,31 @@ public class MainActivity extends AppCompatActivity {
             if (!isGPSEnabled()) {
                 buildAlertMessageNoGps();
             }
-
-            aSwitch = findViewById(R.id.locationServiceSwitch);
-            appData = getSharedPreferences("appData", MODE_PRIVATE); // 설정값 불러오기
-            load();
-            if (switchData) { // 이전에 스위치를 사용했다면
-                aSwitch.setChecked(switchData);
-            }
-            aSwitch.setOnCheckedChangeListener(new switchListener());
-
-            if (aSwitch.isChecked() == true) {
-                mPeriod = period;
-                getPeriod();
-                Log.d("LoactionService", "switch 버튼이 켜져 있음.");
-                if (!isServiceRunning(class_name) || mPeriod != period) {
-                    Log.d("LoactionService", "Location Service 시작");
-                    Intent Lintent = new Intent(MainActivity.this, LocationService.class);
-                    startService(Lintent);
-                } else {
-                    Log.d("LoactionService", "Location Service는 이미 실행중..");
-                }
-            } else {
-                Log.d("LoactionService", "switch 버튼이 꺼져 있음.");
-            }
         }
 
         checkDangerousPermissions();
+
+        aSwitch = findViewById(R.id.locationServiceSwitch);
+        getPeriod();
+        appData = getSharedPreferences("appData", MODE_PRIVATE); // 설정값 불러오기
+        load();
+        if (switchData) { // 이전에 스위치를 사용했다면
+            aSwitch.setChecked(switchData);
+        }
+        aSwitch.setOnCheckedChangeListener(new switchListener());
+
+        if (aSwitch.isChecked() == true) {
+            Log.d("LoactionService", "switch 버튼이 켜져 있음.");
+            if (!isServiceRunning(class_name)) {
+                Log.d("LoactionService", "Location Service 시작");
+                Intent Lintent = new Intent(MainActivity.this, LocationService.class);
+                startService(Lintent);
+            } else {
+                Log.d("LoactionService", "Location Service는 이미 실행중..");
+            }
+        } else {
+            Log.d("LoactionService", "switch 버튼이 꺼져 있음.");
+        }
 
         //보호자 전화 연동
         ImageView iv_siren = findViewById(R.id.iv_siren);
@@ -225,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 save();
+                getPeriod();
                 Log.d("LoactionService", "스위치 버튼 꺼짐..");
                 if (location_intent != null) {
                     stopService(location_intent);
@@ -322,10 +321,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, UserUpdateActivity.class);
                 startActivity(intent);
                 finish();
-
-//                Intent location_intent = new Intent(MainActivity.this, LocationService.class);
-//                stopService(location_intent);
-//                Log.d("LoactionService", "Location Service 멈춤..");
                 break;
             case R.id.btn_alarm_setting:
                 Intent intent2 = new Intent(MainActivity.this, AlarmSettingActivity.class);
@@ -335,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // 추적 주기를 받아옴
     public void getPeriod() {
         UserDBHelper helper = new UserDBHelper(getApplicationContext());
         SQLiteDatabase userDB = helper.getReadableDatabase();

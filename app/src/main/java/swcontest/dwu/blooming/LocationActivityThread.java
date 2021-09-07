@@ -1,14 +1,12 @@
-package swcontest.dwu.blooming.service;
+package swcontest.dwu.blooming;
 
 import android.os.Handler;
 
-import static swcontest.dwu.blooming.MainActivity.period;
-
-public class LocationServiceThread extends Thread {
+public class LocationActivityThread extends Thread  {
     Handler handler;
     boolean isRun = true;
 
-    public LocationServiceThread(Handler handler) {
+    public LocationActivityThread(Handler handler) {
         this.handler = handler;
     }
 
@@ -22,7 +20,7 @@ public class LocationServiceThread extends Thread {
         while (isRun) {
             handler.sendEmptyMessage(0);
             try {
-                Thread.sleep(1000 * 60 * period);
+                Thread.sleep(1000 * 60 * 1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
