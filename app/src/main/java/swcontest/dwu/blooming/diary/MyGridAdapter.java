@@ -58,8 +58,11 @@ public class MyGridAdapter extends ArrayAdapter {
 
         int currentMonth = currentDate.get(Calendar.MONTH)+1;
         int currentYear = currentDate.get(Calendar.YEAR);
+        //int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
+
 
         View view = convertView;
+
         if(view == null){
             view = inflater.inflate(R.layout.single_cell_layout, parent,false);
         }
@@ -67,9 +70,10 @@ public class MyGridAdapter extends ArrayAdapter {
         if(displayMonth == currentMonth && displayYear == currentYear){
             view.setBackgroundColor(getContext().getResources().getColor(R.color.blue1));
         }
-        else{
+        else {
             view.setBackgroundColor(Color.parseColor("#cccccc"));
         }
+
 
 
         TextView Day_Number = view.findViewById(R.id.calendar_day);
@@ -91,6 +95,7 @@ public class MyGridAdapter extends ArrayAdapter {
 
             }
         }
+
         //오늘 day 가져옴
         Calendar mCal = Calendar.getInstance();
         int today = mCal.get(Calendar.DAY_OF_MONTH);
@@ -104,6 +109,8 @@ public class MyGridAdapter extends ArrayAdapter {
             Day_Number.setTextColor(mContext.getResources().getColor(R.color.colorToday));
         }
         Day_Number.setVisibility(View.VISIBLE);
+
+
 
         return view;
     }

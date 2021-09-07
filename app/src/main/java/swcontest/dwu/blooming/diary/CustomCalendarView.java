@@ -38,7 +38,7 @@ public class CustomCalendarView extends LinearLayout {
     ImageButton NextButton, PreviousButton;
     TextView CurrentDate;
     GridView gridView;
-    private  static  final  int MAX_CALENDAR_DAYS = 42;
+    private  static  final  int MAX_CALENDAR_DAYS = 35;
     Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
     Context context;
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.KOREA);
