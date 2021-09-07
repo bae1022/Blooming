@@ -68,6 +68,7 @@ public class LocationService extends Service {
 
         dbManager = new LocationDBManager(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationCallback();
     }
 
     @Override
@@ -167,7 +168,6 @@ public class LocationService extends Service {
             super.handleMessage(msg);
 
             initializeNotification();
-            locationCallback();
             getLocation();
         }
     }
@@ -175,9 +175,9 @@ public class LocationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mFusedLocationClient.removeLocationUpdates(locationCallback);
         thread.stopForever();
         thread = null; // 쓰레기 값 만들어서 빠르게 회수하라고 null 값을 넣어줌.
-        mFusedLocationClient.removeLocationUpdates(locationCallback);
         stopForeground(true);
         Log.d(TAG, "LocationService : onDestroy() 실행");
     }

@@ -85,7 +85,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                 MarkerOptions options_start = new MarkerOptions();
                 options_start.position(startLocation);
                 options_start.title("시작 지점");
-                options_start.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                options_start.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 startMarker = mGoogleMap.addMarker(options_start);
                 startMarker.showInfoWindow();
 

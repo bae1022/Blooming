@@ -24,7 +24,7 @@ public class UserPeriodActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.setting_period, container, false);
         Spinner sp = rootView.findViewById(R.id.spinner);
-        Integer[] arr = {10, 20, 30, 40, 50, 60, 70};
+        Integer[] arr = {10, 20, 30, 40, 50, 60};
 
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this.getContext(),
                 android.R.layout.simple_spinner_item, arr);
